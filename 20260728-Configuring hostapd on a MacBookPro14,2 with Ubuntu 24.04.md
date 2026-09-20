@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-07-28T21:16:54+09:00
 title: "MacBookPro14,2 + Ubuntu 24.04でhostapdを設定する"
-description: "少し特殊な用途ですが、MacBook ProをLinuxルータ兼Wi-Fi APとして使う場合の記録です。 今回は MacBookPro14,2 (2017, 13-inch) に Ubuntu 24.04 をインストールし、内蔵無線LANを hostapd でアクセスポイント化しました。 なお、本…"
+description: "nl80211、bridge、5 GHz固定を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 少し特殊な用途ですが、MacBook ProをLinuxルータ兼Wi-Fi APとして使う場合の記録です。

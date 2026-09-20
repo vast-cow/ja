@@ -1,6 +1,6 @@
----
+﻿---
 title: "nginx + Autheliaによる既存Webアプリへの認証機能追加"
-description: ""
+description: "推奨構成、小規模・単一サーバー、HAが必要になったらを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-09-19T11:51:27.735Z
 ---
 

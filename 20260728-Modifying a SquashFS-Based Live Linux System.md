@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-07-28T15:48:17+09:00
 title: "SquashFS化されたLive Linuxの改造手順"
-description: "SystemRescueのようなLive Linuxは、概ね次の構造です。 SquashFSは読み取り専用なので、基本的な処理は次の流れになります。 ただし、SystemRescueでは最初からairootfs.sfsを直接作り直すのではなく、次の優先順位で方法を選ぶのが安全です。 1. sysre…"
+description: "作業環境の準備、ISOを展開する、ISOレベルのファイルだけ変更する場合を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 SystemRescueのようなLive Linuxは、概ね次の構造です。

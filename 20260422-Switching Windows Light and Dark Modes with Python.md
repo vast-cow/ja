@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-04-22T21:28:46+09:00
 title: "Windowsのライト／ダークモードをPythonで切り替える方法"
-description: ":::note 壁紙（単色）, VS Code, Windows Terminalの配色も変更する版を作りました。 https://qiita.com/vast-cow/items/3215d89727cd47cefbc1 ::: このスクリプトは、WindowsのライトモードとダークモードをPyt…"
+description: "目的、仕組みの概要、主な機能を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 :::note

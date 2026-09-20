@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-06-18T13:43:56+09:00
 title: "systemd user service のログを journalctl で確認する"
-description: "systemctl --user status hoge で確認している user service のログは、journalctl では --user-unit を使って確認できる。 直近のログだけ見るなら次のようにする。 リアルタイムで追跡したい場合は -f を付ける。 今回のブート以降のログに絞…"
+description: "`systemctl --user status hoge` で確認している user service のログは、`journalctl` では `--user-unit` を使って確認できる。"
 ---
 
 `systemctl --user status hoge` で確認している user service のログは、`journalctl` では `--user-unit` を使って確認できる。

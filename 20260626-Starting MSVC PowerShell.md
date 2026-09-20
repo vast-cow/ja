@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-06-26T12:09:52+09:00
 title: "MSVC PowerShell の起動"
-description: "この例では、Microsoft Visual C++（MSVC）開発環境用にあらかじめ構成された PowerShell セッションを起動する方法を示します。 このスクリプトは、Visual Studio Developer PowerShell を手動で開く代わりに、適切な Visual Studi…"
+description: "目的、動作の仕組み、コマンドライン オプションを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 この例では、Microsoft Visual C++（MSVC）開発環境用にあらかじめ構成された PowerShell セッションを起動する方法を示します。

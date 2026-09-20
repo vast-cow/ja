@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-01-28T23:22:10+09:00
 title: "Android Studio 向け `.gitignore` の考え方と実務での定番構成"
-description: "Android Studio 向け .gitignore の考え方と実務での定番構成 Android Studio（Gradle / Kotlin ベース）で Android アプリを開発する際、.gitignore をどう書くかは多くの開発者が一度は悩むポイントです。実際には、ネット上の議論や実務…"
+description: "Android 向け .gitignore の基本方針、基準としてよく参照される公式情報、意見が分かれるポイント①：.idea/ をどうするかを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 # Android Studio 向け `.gitignore` の考え方と実務での定番構成

@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-01-29T00:18:18+09:00
 title: "Android TVで指定したYouTube動画をYouTubeアプリで開く方法"
-description: "この記事では、Android TV で YouTube動画をYouTubeアプリで開く方法を、Kotlin のサンプルコード付きで分かりやすく解説します。 Android TV では通常のスマホ向け YouTube アプリとはパッケージ名や挙動が異なるため、段階的なフォールバック処理が重要になります…"
+description: "Android TV 用 YouTube アプリのパッケージ名、Kotlin で指定動画を開く実装例、Android 11 以降のパッケージ可視性対策を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 この記事では、**Android TV で YouTube動画をYouTubeアプリで開く方法**を、Kotlin のサンプルコード付きで分かりやすく解説します。

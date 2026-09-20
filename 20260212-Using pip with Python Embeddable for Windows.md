@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-02-12T20:50:30+09:00
 title: "Windows版 Python embeddable で pip を使う方法"
-description: "Windows の Python embeddable 配布版（python-3.x.x-embed-amd64.zip）は軽量な実行環境ですが、pip や venv は標準では利用できません。 本記事では get-pip.py を使って pip を導入する方法と、venv の代替として virtu…"
+description: "対象環境、① embeddable を展開、② get-pip.py を取得を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 Windows の **Python embeddable 配布版**（`python-3.x.x-embed-amd64.zip`）は軽量な実行環境ですが、**pip や venv は標準では利用できません**。

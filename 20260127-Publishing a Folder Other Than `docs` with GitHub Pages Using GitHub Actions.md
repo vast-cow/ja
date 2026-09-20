@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-01-27T21:43:50+09:00
 title: "`docs` 以外のフォルダを GitHub Pages で公開する（GitHub Actions 方式）"
-description: "GitHub Pages は /docs や特定ブランチから公開する構成がよく使われますが、frontend/ のような 任意のフォルダをそのまま公開したい場合は、GitHub Actions を使ったデプロイが安定です。リポジトリ側の設定が「Deploy from a branch」のままだと、A…"
+description: "GitHub Pages の公開ソースを GitHub Actions に切り替える、GitHub Actions のワークフローを追加する、重要: 公開したいフォルダをそのままアップロードするを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 GitHub Pages は `/docs` や特定ブランチから公開する構成がよく使われますが、`frontend/` のような **任意のフォルダをそのまま公開**したい場合は、**GitHub Actions を使ったデプロイ**が安定です。リポジトリ側の設定が「Deploy from a branch」のままだと、Actions の `deploy-pages` と噛み合わず問題になることがあります。

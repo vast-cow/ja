@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-02-10T12:05:08+09:00
 title: "Tailwind CSS v4.1.18 入門（静的 HTML + JavaScript 編）"
-description: "“使った分だけ生成”で CSS を最小化しつつ、凝った UI と Light/Dark 切替を作る Tailwind CSS は「ユーティリティファースト」な CSS フレームワークですが、静的サイトで特に効くのは次の点です。 Tailwind が HTML/JS をスキャン 実際に使っているクラス…"
+description: "作るもの、ディレクトリ構成、Tailwind CSS をインストール（v4.1.18）を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 ![screenshot.jpg](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4339611/a1b35182-acec-48f2-a734-0742daee9e4d.jpeg)

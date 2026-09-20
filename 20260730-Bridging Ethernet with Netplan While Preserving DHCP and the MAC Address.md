@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-07-30T13:29:13+09:00
 title: "NetplanでEthernetをブリッジ化して、DHCPとMACアドレスを維持する"
-description: "LinuxマシンをWi-Fiアクセスポイント（hostapd）として利用する場合、Wi-Fiクライアントを既存の有線LANと同じL2ネットワークに参加させたいことがあります。 そのような場合は、EthernetインターフェースをLinux Bridgeに参加させ、IPアドレスはBridge側に持たせ…"
+description: "Netplanの設定例、安全に設定を試す、hostapdと組み合わせるを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 LinuxマシンをWi-Fiアクセスポイント（hostapd）として利用する場合、Wi-Fiクライアントを既存の有線LANと同じL2ネットワークに参加させたいことがあります。

@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-04-14T17:22:31+09:00
 title: "NVIDIA HPC SDK環境でNCCL Testsをビルドする方法"
-description: "NVIDIA HPC SDK環境でnccl-testsをビルドする場合は、CUDA、NCCL、MPIの各パスを正しく設定したうえでmakeを実行します。ここでは、必要な環境変数の設定とビルド手順を簡潔にまとめます。 手順概要 まず、NVIDIA HPC SDKのインストール先を基準に、CUDAとNC…"
+description: "手順概要、各環境変数の意味、ビルドコマンドを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 NVIDIA HPC SDK環境で`nccl-tests`をビルドする場合は、CUDA、NCCL、MPIの各パスを正しく設定したうえで`make`を実行します。ここでは、必要な環境変数の設定とビルド手順を簡潔にまとめます。

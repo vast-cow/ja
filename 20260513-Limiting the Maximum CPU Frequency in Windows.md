@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-05-13T15:53:13+09:00
 title: "Windows で CPU 周波数の最大値を制限する方法"
-description: "Panasonic Let’s note CF-FV5USVCP の Windows 環境で、CPU の最大周波数を制限する方法を調べた。結論としては、通常の電源プランだけでなく、Windows の オーバーレイ電源スキーム と、Core Ultra 世代で出てくる 複数の CPU 効率クラス向け設…"
+description: "背景、最初にハマった点、最終的に効いた設定を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 Panasonic Let’s note CF-FV5USVCP の Windows 環境で、CPU の最大周波数を制限する方法を調べた。結論としては、通常の電源プランだけでなく、Windows の **オーバーレイ電源スキーム** と、Core Ultra 世代で出てくる **複数の CPU 効率クラス向け設定** までまとめて設定する必要があった。

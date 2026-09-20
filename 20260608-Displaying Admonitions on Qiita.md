@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-06-08T13:58:05+09:00
 title: "Qiitaで注意書きを表示する方法"
-description: "Qiita の注意書き系は、公式チートシート上では :::note 系が基本です。 Qiita の note 記法 使える種類は主にこの3つです。Qiita公式の Markdown チートシートでは、info は省略可能、warn は警告、alert はより強い警告として説明されています。([Qii…"
+description: "Qiita の note 記法、使い分け、実用例を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 Qiita の注意書き系は、公式チートシート上では **`:::note` 系が基本**です。

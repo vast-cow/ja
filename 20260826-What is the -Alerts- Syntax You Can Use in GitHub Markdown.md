@@ -1,6 +1,6 @@
----
+﻿---
 title: "GitHubのMarkdownで使える「Alerts」記法とは？"
-description: ""
+description: "標準Markdownではない、使用できるAlertの種類、複数行を書く場合を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-08-26T06:55:58.209Z
 ---
 

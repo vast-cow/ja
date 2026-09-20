@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-06-03T15:22:08+09:00
 title: "Windows・Windows Terminal・VS Codeを一括でテーマ切替する"
-description: "以下の Python スクリプトは、Windows のライト／ダークテーマを明示的に切り替えつつ、Windows Terminal・VS Code・壁紙色も連動して変更する CLI ツールです。対象は Windows 環境です。 何をするスクリプトか このスクリプトは --day または --nig…"
+description: "何をするスクリプトか、使い方、主な機能を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 以下の Python スクリプトは、**Windows のライト／ダークテーマを明示的に切り替えつつ、Windows Terminal・VS Code・壁紙色も連動して変更する CLI ツール**です。対象は Windows 環境です。

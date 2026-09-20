@@ -1,6 +1,6 @@
----
+﻿---
 title: "FFmpeg + MediaMTXで映像をできるだけ低遅延にネットワーク配信する"
-description: ""
+description: "構成、-fflags nobuffer、-flags low_delayを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-08-11T06:54:54.962Z
 updatedDate: 2026-08-12T04:18:56.930Z
 ---

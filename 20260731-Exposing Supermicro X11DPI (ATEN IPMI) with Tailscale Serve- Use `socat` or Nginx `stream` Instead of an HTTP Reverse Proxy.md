@@ -1,6 +1,6 @@
----
+﻿---
 title: "Supermicro X11DPI (ATEN IPMI) を Tailscale Serve で公開するなら、Nginx HTTP Proxy ではなく socat / Nginx stream を使う"
-description: ""
+description: "やりたかったこと、最初に疑ったのはWebSocket、実際の原因を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-07-31T11:01:26.884Z
 updatedDate: 2026-07-31T11:03:37.278Z
 ---

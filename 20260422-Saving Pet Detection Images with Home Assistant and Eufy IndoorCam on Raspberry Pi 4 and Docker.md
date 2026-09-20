@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-04-22T23:46:12+09:00
 title: "Raspberry Pi 4 + Raspberry Pi OS + Docker で Home Assistant と Eufy IndoorCam 2K Pan & Tilt を連携し、ペット検出時に画像保存する"
-description: "Raspberry Pi 4 + Raspberry Pi OS + Docker で Home Assistant と Eufy IndoorCam 2K Pan & Tilt を連携し、ペット検出時に画像保存する Anker の Eufy IndoorCam 2K Pan & Tilt を Ho…"
+description: "この記事でやりたいこと、まず結論、Raspberry Pi OS を準備するを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 # Raspberry Pi 4 + Raspberry Pi OS + Docker で Home Assistant と Eufy IndoorCam 2K Pan & Tilt を連携し、ペット検出時に画像保存する

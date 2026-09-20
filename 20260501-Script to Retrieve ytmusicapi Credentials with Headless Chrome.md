@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-05-01T22:48:41+09:00
 title: "headless Chromeでytmusicapiに必要な情報を取得するスクリプト"
-description: "このスクリプトは、YouTube Musicでytmusicapiを利用するために必要なリクエスト情報を取得するためのものです。既に起動しているChromeまたはEdgeに接続し、YouTube Musicへアクセスしたときに発生する通信を監視して、必要なヘッダー情報をJSONファイルとして保存しま…"
+description: "目的、何をしているか、事前準備を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 このスクリプトは、YouTube Musicで`ytmusicapi`を利用するために必要なリクエスト情報を取得するためのものです。既に起動しているChromeまたはEdgeに接続し、YouTube Musicへアクセスしたときに発生する通信を監視して、必要なヘッダー情報をJSONファイルとして保存します。

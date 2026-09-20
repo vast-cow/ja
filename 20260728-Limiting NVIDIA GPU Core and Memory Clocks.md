@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-07-28T14:57:05+09:00
 title: "NVIDIA GPUのコアクロック・メモリクロックを制限する方法"
-description: "Linux：nvidia-smiで制限する 対応GPUなら、コアクロックとメモリクロックの範囲を直接指定できます。root権限が必要です。GPUクロックのロックはVolta世代以降でサポートされていますが、製品・ドライバによっては Not Supported になります。([NVIDIA Docs]…"
+description: "Linux：nvidia-smiで制限するについて、具体的な手順と注意点をまとめます。"
 ---
 
 ## Linux：`nvidia-smi`で制限する

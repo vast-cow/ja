@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-04-24T10:52:32+09:00
 title: "`sudoers` を編集して `sudo -e` を通す方法と、Emacs TRAMP `/sudo::` で編集する方法"
-description: "sudo -e は便利ですが、最近の sudo では安全策として制限が強めです。とくに、呼び出しユーザーが書き込み可能なディレクトリ配下のファイルは sudoedit で拒否されることがあります。これは sudoers の sudoeditcheckdir が既定で有効だからです。sudoedit…"
+description: "背景: なぜ sudo -e が止めるのか、方法1: sudoers を編集して sudo -e の制限を緩める、emacsclient を sudoedit から使うを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 `sudo -e` は便利ですが、最近の `sudo` では安全策として制限が強めです。とくに、**呼び出しユーザーが書き込み可能なディレクトリ配下のファイルは `sudoedit` で拒否される**ことがあります。これは `sudoers` の `sudoedit_checkdir` が既定で有効だからです。`sudoedit` は一時ファイル経由で編集し、`SUDO_EDITOR` / `VISUAL` / `EDITOR` を使ってエディタを起動します。 ([man7.org][1])

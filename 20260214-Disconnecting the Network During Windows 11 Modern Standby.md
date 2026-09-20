@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-02-14T17:33:19+09:00
 title: "Windows 11 Modern Standby中にネットワークを切断する設定"
-description: "Windows 11 の Modern Standby（S0 低電力アイドル）は、スリープ中でも通知や同期のためにネットワークが維持されることがあります。 「スリープ中はネットワークを切ってほしい」「夜間のバックグラウンド通信を止めたい」といった用途では、Connected Standby を無効化…"
+description: "グループポリシーで「スタンバイ中のネットワーク接続」を無効化（Pro/Enterprise向け）、Modern Standby（S0）かどうかを確認する、注意点（副作用）を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 Windows 11 の **Modern Standby（S0 低電力アイドル）**は、スリープ中でも通知や同期のためにネットワークが維持されることがあります。

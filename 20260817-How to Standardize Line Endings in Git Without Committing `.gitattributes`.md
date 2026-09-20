@@ -1,6 +1,6 @@
----
+﻿---
 title: "Gitで `.gitattributes` をコミットせずに改行コードを統一する方法"
-description: ""
+description: "特定のリポジトリだけ設定する、すべてのリポジトリで共通設定する、.git/info/attributes とグローバル設定の使い分けを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-08-17T06:02:23.416Z
 ---
 

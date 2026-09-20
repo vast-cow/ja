@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-02-17T15:28:45+09:00
 title: "Rootless Docker コンテナ内で X11 アプリを使う（xauth で MIT-MAGIC-COOKIE を渡す）"
-description: "Rootless Docker はホスト側の権限を絞れて便利ですが、GUI アプリ（X11）をコンテナから表示したいときに少しだけハマりどころがあります。 この記事では ホストの X サーバに対して、コンテナ側へ xauth の Cookie を渡し、rootless Docker コンテナ内から…"
+description: "前提、全体像（何をしているか）、ホストで X11 の Cookie を確認するを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 Rootless Docker はホスト側の権限を絞れて便利ですが、GUI アプリ（X11）をコンテナから表示したいときに少しだけハマりどころがあります。

@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-04-24T10:52:11+09:00
 title: "Home Assistant で Eufy の検出画像を Slack に自動投稿する"
-description: "画像取得までは設定済みの状態から、Slack 通知を追加する手順 Eufy と Home Assistant の連携が済んでいて、すでに Event Image を取得できる 状態なら、次はその画像を Slack に投げるだけです。 この記事では、次の前提で進めます。 Eufy のカメラは Home…"
+description: "画像取得までは設定済みの状態から、Slack 通知を追加する手順、まず全体の流れを確認する、Slack App を作るを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 ## 画像取得までは設定済みの状態から、Slack 通知を追加する手順

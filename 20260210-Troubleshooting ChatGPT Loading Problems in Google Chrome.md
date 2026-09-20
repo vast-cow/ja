@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-02-10T11:00:05+09:00
 title: "Google ChromeでChatGPTが開きにくいときの対処法"
-description: "Google ChromeでChatGPTがなかなか開けない、読み込みが重いと感じる場合、原因がネットワーク関連プロセスの不具合であることがあります。 多くの場合、Chrome内蔵の「タスクマネージャ」で 「Utility: Network Service」だけを終了すれば改善 します。 Chrom…"
+description: "対処手順（Utility: Network Service のみ終了する）について、具体的な手順と注意点をまとめます。"
 ---
 
 Google ChromeでChatGPTがなかなか開けない、読み込みが重いと感じる場合、原因がネットワーク関連プロセスの不具合であることがあります。

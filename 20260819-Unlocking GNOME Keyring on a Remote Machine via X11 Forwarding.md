@@ -1,6 +1,6 @@
----
+﻿---
 title: "リモートマシンのGNOME KeyringをX11 ForwardingでUnlockする"
-description: ""
+description: "GNOME KeyringをUnlockする、SSH agentを使う、なぜ dbus-update-activation-environment が必要なのかを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-08-19T09:42:29.761Z
 updatedDate: 2026-08-19T10:54:07.822Z
 ---

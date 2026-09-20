@@ -1,6 +1,6 @@
----
+﻿---
 title: "PiKVM で Tailscale HTTPS 証明書を自動更新する"
-description: ""
+description: "更新スクリプト、systemd サービス、systemd タイマーを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-08-10T07:08:34.109Z
 updatedDate: 2026-08-31T14:55:39.031Z
 ---

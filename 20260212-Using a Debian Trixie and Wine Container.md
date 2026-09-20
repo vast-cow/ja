@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-02-12T20:47:18+09:00
 title: "Debian Trixie + Wine コンテナの利用方法"
-description: "この Dockerfile は、Debian Trixie をベースに Wine をインストールしたコンテナを作成します。主な目的は、Docker コンテナ内で Windows アプリケーションを実行することです。 Docker イメージのビルド まず、内容を Dockerfile という名前で保存…"
+description: "Docker イメージのビルド、コンテナの起動方法、Windows アプリケーションの実行を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 この Dockerfile は、Debian Trixie をベースに Wine をインストールしたコンテナを作成します。主な目的は、Docker コンテナ内で Windows アプリケーションを実行することです。

@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-06-21T15:21:58+09:00
 title: "bcache で cache device が無い backing device を強制的に認識させる方法"
-description: "bcache を使っていた環境で cache device が故障・消失・未接続になると、backing device だけでは通常 /dev/bcache0 などの bcache デバイスが自動作成されないことがあります。 この場合、backing device 側を bcache に登録したうえ…"
+description: "前提、mount するデバイス、sysfs のパスについてを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 bcache を使っていた環境で cache device が故障・消失・未接続になると、backing device だけでは通常 `/dev/bcache0` などの bcache デバイスが自動作成されないことがあります。

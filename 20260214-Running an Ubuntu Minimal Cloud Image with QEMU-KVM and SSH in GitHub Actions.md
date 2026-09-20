@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-02-14T22:54:02+09:00
 title: "GitHub ActionsでQEMU-KVMとSSHを用いてUbuntu Minimal Cloud Imageを実行する"
-description: "本記事では、qemu-kvm-ubuntu-minimal-cloudimg-ssh というGitHub Actionsワークフローの内容を解説する。このワークフローは、QEMUとKVMを用いてUbuntu 24.04 Minimal Cloud Imageを仮想マシンとして起動し、SSH接続を行い…"
+description: "ワークフローの概要、依存パッケージのインストール、KVMアクセスの確保を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 本記事では、**`qemu-kvm-ubuntu-minimal-cloudimg-ssh`** というGitHub Actionsワークフローの内容を解説する。このワークフローは、QEMUとKVMを用いてUbuntu 24.04 Minimal Cloud Imageを仮想マシンとして起動し、SSH接続を行い、起動確認を実施し、最後にクリーンアップまでを自動化する。

@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-06-21T15:50:22+09:00
 title: "Rocky LinuxでLid Close時のサスペンドを無効化する方法"
-description: "Rocky Linux では、multi-user.target でも蓋閉じ処理は基本的に systemd-logind が扱います。HandleLidSwitch=ignore にします。Rocky 公式ドキュメントでも /etc/systemd/logind.conf の HandleLidSw…"
+description: "推奨設定、確認、直接 /etc/systemd/logind.conf を編集する場合を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 Rocky Linux では、`multi-user.target` でも蓋閉じ処理は基本的に **systemd-logind** が扱います。`HandleLidSwitch=ignore` にします。Rocky 公式ドキュメントでも `/etc/systemd/logind.conf` の `HandleLidSwitch` を `ignore` にする方法が案内されています。([Rocky Linux Docs][1])

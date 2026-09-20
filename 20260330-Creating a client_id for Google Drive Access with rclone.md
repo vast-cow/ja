@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-03-30T18:49:05+09:00
 title: "rcloneでGoogle Driveにアクセスするためのclient_idの作成方法"
-description: "rcloneを使うとGoogle Driveにアクセスできて便利ですが、デフォルトのclientidが共有されているため、パフォーマンスが極度に低くなります。独自のclientidを作成して、この制限をなくしましょう。 https://rclone.org/drive/#making-your-ow…"
+description: "独自の client_id の作成方法について、具体的な手順と注意点をまとめます。"
 ---
 
 rcloneを使うとGoogle Driveにアクセスできて便利ですが、デフォルトのclient_idが共有されているため、パフォーマンスが極度に低くなります。独自のclient_idを作成して、この制限をなくしましょう。

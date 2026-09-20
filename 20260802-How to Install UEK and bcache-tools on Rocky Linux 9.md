@@ -1,6 +1,6 @@
----
+﻿---
 title: "Rocky Linux 9へUEKを導入する手順（Oracleリポジトリ最小利用）"
-description: ""
+description: "方針、UEK R7かR8か、事前確認を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-08-02T06:11:33.033Z
 ---
 

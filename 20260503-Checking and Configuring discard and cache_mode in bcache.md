@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-05-03T16:18:20+09:00
 title: "bcacheのdiscardとcache_modeを確認・設定する方法"
-description: "bcacheは、SSDなどの高速なデバイスをキャッシュとして使い、HDDなどの低速なストレージの読み書きを補助する仕組みです。 ここでは、bcacheで使われる主な設定として、discard と cachemode の確認方法と変更方法を簡単に説明します。 discard設定の確認と有効化 disc…"
+description: "discard設定の確認と有効化、cache_modeの確認と変更、使うときの注意点を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 bcacheは、SSDなどの高速なデバイスをキャッシュとして使い、HDDなどの低速なストレージの読み書きを補助する仕組みです。

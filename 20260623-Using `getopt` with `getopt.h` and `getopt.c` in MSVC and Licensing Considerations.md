@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-06-23T19:15:02+09:00
 title: "MSVC で `getopt.h` / `getopt.c` を使って `getopt` を利用する方法とライセンス上の注意点"
-description: "前提 Windows の MSVC 環境には、POSIX 系でよく使われる getopt.h / getopt() が標準では用意されていません。そのため、Linux 向けに書かれた C/C++ コードを MSVC でビルドすると、典型的には次のような問題が出ます。 また、ヘッダだけを追加しても、g…"
+description: "前提、ファイルを用意する、最小サンプルを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 ## 前提

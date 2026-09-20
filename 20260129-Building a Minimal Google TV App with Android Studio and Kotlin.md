@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-01-29T00:04:39+09:00
 title: "Google TV（Android TV OS）向け：Android Studio + Kotlin で 最小構成アプリ を起動するまで"
-description: "対象：Google TV（= Android TV OS） 目的：Android Studio + Kotlin で 最小構成アプリを起動できるところまで。 利用環境（Android Studio） 1. 新規プロジェクト作成 1. Android Studio → New Project 2. テ…"
+description: "利用環境（Android Studio）、新規プロジェクト作成、実行（エミュレータ or 実機）を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 対象：**Google TV（= Android TV OS）**

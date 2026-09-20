@@ -1,7 +1,7 @@
----
+﻿---
 pubDatetime: 2026-04-13T19:04:44+09:00
 title: "Web版 ChatGPT にモデル名を表示する方法"
-description: "この記事では、Chrome 拡張機能 User-Agent Switcher and Manager を使用し、chatgpt.com に対してカスタム設定を行うことで、ChatGPT のインターフェース上にモデル名をより明確に表示させるシンプルな方法を説明します。 概要 User-Agent Sw…"
+description: "使用した設定、この設定が行うこと、なぜモデル名が表示されるのかを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 ---
 
 この記事では、Chrome 拡張機能 **User-Agent Switcher and Manager** を使用し、`chatgpt.com` に対してカスタム設定を行うことで、ChatGPT のインターフェース上にモデル名をより明確に表示させるシンプルな方法を説明します。

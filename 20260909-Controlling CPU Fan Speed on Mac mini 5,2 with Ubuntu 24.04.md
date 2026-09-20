@@ -1,6 +1,6 @@
----
+﻿---
 title: "macmini5,2 ubuntu24.04でcpuファンスピードをコントロールしたい"
-description: ""
+description: "まず applesmc を確認、手動で回転数を変更する、おすすめ：mbpfan で温度連動を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-09-09T01:54:03.910Z
 ---
 
