@@ -21,13 +21,15 @@ remote: Permission to owner/repo.git denied to other-user.
 
 のようなエラーになることがあります。
 
-そこで、remote URLの`owner`部分をそのままGitHub CLIのアカウント名として解釈し、
+そこで、remote URLの`owner`部分をGitHub CLIのアカウント名として解釈し、
 
 ```bash
-gh auth token --user OWNER
+gh auth token --user ACCOUNT
 ```
 
 からPATを取り出してGitに返すcredential helperを`.gitconfig`へ直接埋め込みます。
+
+個人repositoryではownerをそのままaccountとして使用し、Organization配下などでownerと認証に使うaccountが異なる場合には、明示的なマッピングを追加できるようにします。
 
 外部スクリプトも不要です。
 
@@ -47,7 +49,7 @@ gh auth status
 
 で確認できます。
 
-この方法では、たとえばrepository URLが
+この方法では、基本的にはrepository URLが、
 
 ```text
 https://github.com/aont/foo.git
@@ -61,7 +63,7 @@ gh auth token --user aont
 
 を実行します。
 
-したがって、基本的には
+したがって、デフォルトでは、
 
 ```text
 repository owner = ghに登録したaccount名
@@ -69,9 +71,11 @@ repository owner = ghに登録したaccount名
 
 という運用を前提にします。
 
+この関係が成立しない場合だけ、明示的なマッピングで上書きします。
+
 ## `.gitconfig`
 
-設定は次のようにします。
+Organization単位やrepository単位のマッピングにも対応する場合、設定は次のようにします。
 
 ```gitconfig
 [credential]
@@ -81,11 +85,24 @@ repository owner = ghに登録したaccount名
     helper =
     helper = "!f() { \
         [ \"$1\" = get ] || exit 0; \
-        account=''; \
+        path=''; \
         while IFS='=' read -r k v; do \
-            [ \"$k\" = path ] && account=${v%%/*}; \
+            [ \"$k\" = path ] && path=$v; \
         done; \
-        [ -n \"$account\" ] || exit 0; \
+        [ -n \"$path\" ] || exit 0; \
+        owner=${path%%/*}; \
+        repo=${path#*/}; \
+        repo=${repo%.git}; \
+        case \"$owner/$repo\" in \
+            my-org/special-repo) account='special-account' ;; \
+            *) \
+                case \"$owner\" in \
+                    my-org) account='my-work-account' ;; \
+                    another-org) account='another-account' ;; \
+                    *) account=\"$owner\" ;; \
+                esac \
+                ;; \
+        esac; \
         token=$(gh auth token --user \"$account\") || exit 0; \
         printf 'username=%s\\npassword=%s\\n' \"$account\" \"$token\"; \
     }; f"
@@ -104,11 +121,11 @@ repository owner = ghに登録したaccount名
     }; f"
 ```
 
-ポイントは3つあります。
+ポイントは4つあります。
 
 ## `credential.useHttpPath = true` が重要
 
-通常、Gitのcredential helperには
+通常、Gitのcredential helperには、
 
 ```text
 protocol=https
@@ -144,15 +161,33 @@ path=aont/foo.git
 
 のようにpathも渡されます。
 
-## pathの先頭をaccountとして使う
+## pathからownerとrepository名を取得する
 
-helper内では、
+helper内では、まずpathを取得します。
 
 ```sh
-[ "$k" = path ] && account=${v%%/*}
+path=''
+while IFS='=' read -r k v; do
+    [ "$k" = path ] && path=$v
+done
 ```
 
-として、pathの最初の要素を取得しています。
+その後、
+
+```sh
+owner=${path%%/*}
+```
+
+でownerを取り出します。
+
+repository名についても、
+
+```sh
+repo=${path#*/}
+repo=${repo%.git}
+```
+
+として取得します。
 
 たとえば、
 
@@ -163,10 +198,19 @@ path=aont/foo.git
 なら、
 
 ```text
-account=aont
+owner=aont
+repo=foo
 ```
 
-になります。
+となります。
+
+明示的なマッピングが存在しなければ、
+
+```sh
+account="$owner"
+```
+
+として、ownerをそのままGitHub CLIのaccountとして使用します。
 
 その後、
 
@@ -205,6 +249,151 @@ gh auth token --user another-user
 になります。
 
 `gh auth switch`を毎回実行する必要はありません。
+
+## Organizationのownerを別のaccountへマッピングする
+
+単純な、
+
+```text
+owner = account
+```
+
+というルールは個人repositoryでは扱いやすいですが、Organization配下のrepositoryでは成立しない場合があります。
+
+たとえばremote URLが、
+
+```text
+https://github.com/my-org/foo.git
+```
+
+であっても、そのOrganizationへアクセスするGitHubアカウントが、
+
+```text
+my-work-account
+```
+
+だったとします。
+
+この場合、
+
+```text
+repository owner = my-org
+認証に使うaccount = my-work-account
+```
+
+なので、
+
+```bash
+gh auth token --user my-org
+```
+
+としても正しいcredentialは取得できません。
+
+そこで、owner単位のマッピングを追加します。
+
+```sh
+case "$owner" in
+    my-org) account='my-work-account' ;;
+    another-org) account='another-account' ;;
+    *) account="$owner" ;;
+esac
+```
+
+これによって、
+
+```text
+github.com/my-org/foo
+        ↓
+owner = my-org
+        ↓
+account = my-work-account
+        ↓
+gh auth token --user my-work-account
+```
+
+という動作になります。
+
+明示的に指定していないownerについては、
+
+```sh
+*) account="$owner" ;;
+```
+
+にフォールバックするため、従来どおりownerをそのままaccountとして使用します。
+
+つまり、個人repositoryのためにすべてのownerを列挙する必要はありません。
+
+## 特定のrepositoryだけ別accountを使う
+
+同じOrganization配下でも、repositoryによって認証に使うアカウントを変えたい場合があります。
+
+たとえば、
+
+```text
+https://github.com/my-org/foo.git
+https://github.com/my-org/special-repo.git
+```
+
+があり、通常は、
+
+```text
+my-work-account
+```
+
+を使うものの、`special-repo`だけは、
+
+```text
+special-account
+```
+
+を使いたいとします。
+
+その場合は、owner単位のマッピングより先に`owner/repo`単位で判定します。
+
+```sh
+case "$owner/$repo" in
+    my-org/special-repo) account='special-account' ;;
+    *)
+        case "$owner" in
+            my-org) account='my-work-account' ;;
+            another-org) account='another-account' ;;
+            *) account="$owner" ;;
+        esac
+        ;;
+esac
+```
+
+この構成では、優先順位が、
+
+```text
+repository単位のマッピング
+        ↓
+owner単位のマッピング
+        ↓
+ownerをそのままaccountとして使用
+```
+
+となります。
+
+たとえば、
+
+```text
+github.com/my-org/special-repo
+        ↓
+special-account
+
+github.com/my-org/other-repo
+        ↓
+my-work-account
+
+github.com/aont/foo
+        ↓
+aont
+```
+
+という形です。
+
+これなら、個人repository、Organization配下のrepository、さらに一部repositoryだけの例外を同じcredential helperで扱えます。
 
 ## `helper =` で既存credential helperをリセットする
 
@@ -281,16 +470,18 @@ gh auth token --user aont
 
 を自動的に使えます。
 
-つまりGitHub repositoryとGistを同じルールで扱えます。
+GitHub repositoryとGistでは多少ルールが異なりますが、どちらもURLのpathをcredential routingに利用できます。
 
 ```text
-github.com/USER/REPO
+github.com/OWNER/REPO
 gist.github.com/USER/GIST
                 ↓
-             USERを抽出
+        accountを決定
                 ↓
-gh auth token --user USER
+gh auth token --user ACCOUNT
 ```
+
+通常の個人repositoryやGistではownerまたはUSERをそのまま使い、Organization配下のrepositoryについては必要に応じてマッピングで上書きする形です。
 
 ## 動作確認
 
@@ -320,7 +511,45 @@ password=...
 
 です。
 
-ここで`username`が別アカウントになっている場合は、
+Organization単位のマッピングについても確認できます。
+
+```bash
+printf '%s\n' \
+  'protocol=https' \
+  'host=github.com' \
+  'path=my-org/foo.git' \
+  '' |
+git credential fill
+```
+
+上記の設定なら、期待するusernameは、
+
+```text
+username=my-work-account
+```
+
+です。
+
+さらに、repository単位のoverrideについて、
+
+```bash
+printf '%s\n' \
+  'protocol=https' \
+  'host=github.com' \
+  'path=my-org/special-repo.git' \
+  '' |
+git credential fill
+```
+
+を実行すると、
+
+```text
+username=special-account
+```
+
+となります。
+
+もし`username`が想定と異なる場合は、
 
 ```bash
 git config --show-origin --get-all credential.helper
@@ -340,19 +569,25 @@ gh auth git-credential
 
 通常の単一アカウント運用ならこれで十分です。
 
-ただ、複数アカウントを同一ホスト`github.com`で使っている場合、「repository ownerに応じてどの`gh` accountを使うか」を明示的に制御したくなります。
+ただ、複数アカウントを同一ホスト`github.com`で使っている場合、「repository ownerやrepositoryそのものに応じて、どの`gh` accountを使うか」を明示的に制御したくなります。
 
 今回のhelperでは、
 
 ```text
 remote URL
     ↓
-ownerを抽出
+owner/repositoryを抽出
     ↓
-gh auth token --user owner
+repository単位のマッピングがあれば使用
+    ↓
+owner単位のマッピングがあれば使用
+    ↓
+なければownerをaccountとして使用
+    ↓
+gh auth token --user account
 ```
 
-という非常に単純な規則にしているため、現在どのアカウントが`gh`でactiveになっているかを意識する必要がありません。
+という規則にしているため、現在どのアカウントが`gh`でactiveになっているかを意識する必要がありません。
 
 ## この構成の利点
 
@@ -366,7 +601,7 @@ gh auth token --user ACCOUNT
 
 から取得します。
 
-そのため、設定として保存されるのは「どのアカウントを使うか」というルールだけです。
+そのため、設定として保存されるのは「どのrepositoryにどのアカウントを使うか」というルールだけです。
 
 また、repositoryごとに、
 
@@ -382,17 +617,37 @@ git config credential.username ...
 
 を設定したりする必要もありません。
 
-remote URLそのものがcredential routingの情報になります。
+remote URLそのものがcredential routingの入力になります。
+
+個人repositoryなら、
+
+```text
+github.com/aont/foo
+        ↓
+account = aont
+```
+
+Organization配下なら、
+
+```text
+github.com/my-org/foo
+        ↓
+account = my-work-account
+```
+
+さらに特定repositoryだけ例外にしたければ、
+
+```text
+github.com/my-org/special-repo
+        ↓
+account = special-account
+```
+
+という形で扱えます。
 
 ## まとめ
 
-複数GitHubアカウントをHTTPSで使う場合、
-
-```text
-github.com/<account>/<repo>
-```
-
-の`account`部分をそのまま`gh`のaccount選択に使うと、かなりシンプルに運用できます。
+複数GitHubアカウントをHTTPSで使う場合、remote URLのpathを使って、適切な`gh` accountを自動的に選択できます。
 
 仕組みとしては、
 
@@ -403,27 +658,39 @@ credential.useHttpPath
   ↓
 path=owner/repo.git
   ↓
-ownerを抽出
+ownerとrepoを抽出
   ↓
-gh auth token --user owner
+repository単位のマッピングがある？
+  ├─ yes → 指定されたaccount
+  └─ no
+       ↓
+     owner単位のマッピングがある？
+       ├─ yes → 指定されたaccount
+       └─ no → ownerをそのままaccountとして使用
+  ↓
+gh auth token --user account
   ↓
 username/passwordとしてGitへ返す
 ```
 
-だけです。
+という流れです。
 
-個人アカウントを複数使っていて、
+基本ルールはこれまでと同じく、
 
 ```text
 repository owner = GitHub account
 ```
 
-という関係が成立している環境なら、かなり扱いやすい方法だと思います。
+です。
 
-Organization配下のrepositoryなどで、
+そのうえで、Organization配下など、
 
 ```text
-owner != 認証に使うaccount
+repository owner != 認証に使うaccount
 ```
 
-となる場合だけは別途マッピングが必要ですが、個人アカウント中心ならまずこの構成で十分です。
+となるケースだけowner単位のマッピングを追加できます。
+
+さらに、同じOrganization内でも認証アカウントを分ける必要があれば、repository単位でoverrideできます。
+
+これによって、PAT自体を`.gitconfig`へ保存したり、外部スクリプトを用意したりすることなく、複数GitHubアカウントのcredential routingを`.gitconfig`だけで完結できます。
