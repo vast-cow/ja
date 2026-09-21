@@ -29,6 +29,15 @@ jobs:
           ref: ${{ github.event_name == 'push' && github.sha || 'posts' }}
           path: src/content/posts
 
+      - name: Cache OG image fonts
+        uses: actions/cache@v4
+        with:
+          path: .cache/og-fonts
+          key: ${{ runner.os }}-og-fonts-${{ hashFiles('scripts/download-og-fonts.sh') }}
+
+      - name: Download OG image fonts
+        run: bash scripts/download-og-fonts.sh
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
