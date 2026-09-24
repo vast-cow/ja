@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'push' && github.sha || 'posts' }}
-          path: src/content/posts
+          path: src/content
 
       - name: Cache OG image fonts
         uses: actions/cache@v4
