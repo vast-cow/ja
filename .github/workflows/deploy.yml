@@ -70,6 +70,10 @@ jobs:
           SITE_URL: ${{ steps.pages.outputs.base_url }}
           ASTRO_SITE: ${{ steps.pages.outputs.origin }}
           ASTRO_BASE: ${{ steps.pages.outputs.base_path }}
+          PUBLIC_GISCUS_REPO: ${{ vars.GISCUS_REPO }}
+          PUBLIC_GISCUS_REPO_ID: ${{ vars.GISCUS_REPO_ID }}
+          PUBLIC_GISCUS_CATEGORY: ${{ vars.GISCUS_CATEGORY }}
+          PUBLIC_GISCUS_CATEGORY_ID: ${{ vars.GISCUS_CATEGORY_ID }}
         run: pnpm build
 
       - name: Upload Pages artifact
