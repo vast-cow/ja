@@ -1,5 +1,5 @@
 ---
-pubDatetime: 2026-09-24T17:17:0+09:00
+pubDatetime: 2026-09-24T17:17:00+09:00
 title: "tmuxの中からOSC 52で外側ターミナルのクリップボードへ文字列を送る"
 description: "tmux 内から OSC 52 を使って、外側のターミナルのクリップボードへ文字列を送る方法を解説します。`set-clipboard` を使う方法と、`allow-passthrough` で OSC 52 を直接外側へ通す方法の違いと設定方法を紹介します。"
 ---
