@@ -21,7 +21,8 @@ jobs:
       - name: Checkout site
         uses: actions/checkout@v4
         with:
-          ref: astropaper-mine
+          repository: ${{ vars.ASTROPAPER_REPOSITORY }}
+          ref: ${{ vars.ASTROPAPER_BRANCH }}
 
       - name: Checkout posts
         uses: actions/checkout@v4
