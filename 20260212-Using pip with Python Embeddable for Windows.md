@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-02-12T20:50:30+09:00
 title: "Windows版 Python embeddable で pip を使う方法"
 description: "対象環境、① embeddable を展開、② get-pip.py を取得を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

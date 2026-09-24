@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-06-03T15:22:08+09:00
 title: "Windows・Windows Terminal・VS Codeを一括でテーマ切替する"
 description: "何をするスクリプトか、使い方、主な機能を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

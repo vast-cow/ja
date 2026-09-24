@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-06-21T15:50:22+09:00
 title: "Rocky LinuxでLid Close時のサスペンドを無効化する方法"
 description: "推奨設定、確認、直接 /etc/systemd/logind.conf を編集する場合を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

@@ -1,4 +1,4 @@
-﻿---
+---
 title: "NetworkManagerのチェックポイント機能（nmcli device checkpoint）の使い方"
 description: "`nmcli device checkpoint` は、**NetworkManager の設定変更を安全に試すための「復元ポイント（チェックポイント）」機能**です。"
 pubDatetime: 2026-09-16T04:15:12.719Z

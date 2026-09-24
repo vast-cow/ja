@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-02-14T22:54:02+09:00
 title: "GitHub ActionsでQEMU-KVMとSSHを用いてUbuntu Minimal Cloud Imageを実行する"
 description: "ワークフローの概要、依存パッケージのインストール、KVMアクセスの確保を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

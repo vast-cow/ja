@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-06-12T22:05:52+09:00
 title: "WindowsでVHDXを作成する方法と差分VHDXを作成する方法"
 description: "前提、方法A: GUI「ディスクの管理」で作成、方法B: PowerShellでVHDXを作成を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

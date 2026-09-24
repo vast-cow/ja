@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-06-25T19:00:49+09:00
 title: "Weston 内で Waydroid を実行する"
 description: "目的、使用方法、Waydroid の停止を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

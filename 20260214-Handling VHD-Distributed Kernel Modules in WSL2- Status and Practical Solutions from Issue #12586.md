@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-02-14T19:58:22+09:00
 title: "WSL2でVHD配布されるKernel Modulesをどう扱うべきか — Issue #12586 から整理する現状と実用解 —"
 description: "背景：modules.vhdx 配布への移行、WSL 2.5.1 以降で kernelModules が利用可能、2.5.1 未満でのワークアラウンド（暫定対応）を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

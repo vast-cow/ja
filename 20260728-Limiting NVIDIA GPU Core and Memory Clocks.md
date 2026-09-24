@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-07-28T14:57:05+09:00
 title: "NVIDIA GPUのコアクロック・メモリクロックを制限する方法"
 description: "Linux：nvidia-smiで制限するについて、具体的な手順と注意点をまとめます。"

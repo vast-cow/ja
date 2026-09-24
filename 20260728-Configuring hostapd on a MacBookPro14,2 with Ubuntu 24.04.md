@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-07-28T21:16:54+09:00
 title: "MacBookPro14,2 + Ubuntu 24.04でhostapdを設定する"
 description: "nl80211、bridge、5 GHz固定を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

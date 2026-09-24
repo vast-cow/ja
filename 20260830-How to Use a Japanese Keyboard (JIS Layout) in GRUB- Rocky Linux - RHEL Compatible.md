@@ -1,4 +1,4 @@
-﻿---
+---
 title: "GRUBで日本語キーボード（JIS配列）を使う方法：Rocky Linux / RHEL系対応"
 description: "Linuxのキーボード設定とGRUBのキーボード設定は別物、keymap jp で読み込めない場合について、具体的な手順と注意点をまとめます。"
 pubDatetime: 2026-08-30T07:46:21.679Z

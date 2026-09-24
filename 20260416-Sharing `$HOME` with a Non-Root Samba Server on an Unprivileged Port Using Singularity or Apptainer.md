@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-04-16T21:54:25+09:00
 title: "Singularity（Apptainer）で non-root / 非特権ポートの Samba サーバーを立てて `$HOME` を共有する"
 description: "要件と設計方針、コンテナイメージの作成、ホスト側のディレクトリ準備を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

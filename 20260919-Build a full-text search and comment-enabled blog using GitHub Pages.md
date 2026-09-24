@@ -1,4 +1,4 @@
-﻿---
+---
 title: "GitHub Pagesで全文検索・コメント対応ブログを構築する"
 description: "推奨構成、Static Site Generator、検索対象を記事本文だけにするを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-09-19T11:48:36.439Z

@@ -1,4 +1,4 @@
-﻿---
+---
 title: "`dnf-automatic` を使用して Rocky Linux 9 を最新の状態に保つ"
 description: "dnf-automatic をインストールする、dnf-automatic を設定する、自動更新を有効にするを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-08-04T06:50:08.333Z

@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Rocky Linux 9 で FFmpeg + Intel QSV を使うためのセットアップとトラブルシューティング"
 description: "QSV が動くまでのレイヤを理解するについて、具体的な手順と注意点をまとめます。"
 pubDatetime: 2026-08-07T08:31:28.851Z

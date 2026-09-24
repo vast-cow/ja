@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-04-24T10:52:32+09:00
 title: "`sudoers` を編集して `sudo -e` を通す方法と、Emacs TRAMP `/sudo::` で編集する方法"
 description: "背景: なぜ sudo -e が止めるのか、方法1: sudoers を編集して sudo -e の制限を緩める、emacsclient を sudoedit から使うを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

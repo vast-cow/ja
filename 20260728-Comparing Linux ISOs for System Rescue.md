@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-07-28T14:54:05+09:00
 title: "システムレスキュー用途で使えるLinux ISOを比較してみた"
 description: "Anacondaを使わずにRocky Linuxをインストールしたい、rootfsをバックアップして別のファイルシステムへ移行したい、chrootしてdnfやaptを使いたいを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

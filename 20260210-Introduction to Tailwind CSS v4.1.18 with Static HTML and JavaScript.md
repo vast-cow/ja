@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-02-10T12:05:08+09:00
 title: "Tailwind CSS v4.1.18 入門（静的 HTML + JavaScript 編）"
 description: "作るもの、ディレクトリ構成、Tailwind CSS をインストール（v4.1.18）を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

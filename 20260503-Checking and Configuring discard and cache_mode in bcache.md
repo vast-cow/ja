@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-05-03T16:18:20+09:00
 title: "bcacheのdiscardとcache_modeを確認・設定する方法"
 description: "discard設定の確認と有効化、cache_modeの確認と変更、使うときの注意点を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

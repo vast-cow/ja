@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-06-12T12:19:37+09:00
 title: "Rocky Linux 9 の rootfs を F2FS に変更する手順"
 description: "基本方針、Rocky 9 を通常インストールする、SELinux を permissive にしておくを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

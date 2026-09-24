@@ -1,4 +1,4 @@
-﻿---
+---
 title: "GitHub複数アカウント運用で、repo ownerから自動的にghのPATを選ぶ"
 description: "前提、.gitconfig、credential.useHttpPath = true が重要を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-08-26T07:16:37.440Z

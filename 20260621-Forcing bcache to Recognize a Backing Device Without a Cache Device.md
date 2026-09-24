@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-06-21T15:21:58+09:00
 title: "bcache で cache device が無い backing device を強制的に認識させる方法"
 description: "前提、mount するデバイス、sysfs のパスについてを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

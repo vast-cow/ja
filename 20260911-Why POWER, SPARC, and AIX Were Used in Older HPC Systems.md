@@ -1,4 +1,4 @@
-﻿---
+---
 title: "なぜ昔のHPCではPOWERやSPARC、AIXが使われていたのか"
 description: "なぜPOWERやSPARCなどのCPUだったのか、なぜOSもLinuxではなくAIXなどだったのか、では、なぜx86＋Linuxへ移っていったのかを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-09-11T04:49:32.010Z

@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-07-30T13:29:13+09:00
 title: "NetplanでEthernetをブリッジ化して、DHCPとMACアドレスを維持する"
 description: "Netplanの設定例、安全に設定を試す、hostapdと組み合わせるを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

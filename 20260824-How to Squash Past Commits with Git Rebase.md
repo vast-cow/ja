@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Git Rebaseで過去のコミットをSquashする方法"
 description: "Squashするコミットを確認する、Interactive Rebaseを開始する、コミット一覧を編集するを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-08-24T08:20:38.714Z

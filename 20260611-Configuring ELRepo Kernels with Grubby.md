@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-06-11T20:38:33+09:00
 title: "GrubbyでELRepoカーネル設定"
 description: "ELRepo kernel を確認、最新の ELRepo kernel をデフォルトに設定、設定確認を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

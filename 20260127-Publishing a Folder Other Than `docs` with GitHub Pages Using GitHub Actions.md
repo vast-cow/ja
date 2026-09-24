@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-01-27T21:43:50+09:00
 title: "`docs` 以外のフォルダを GitHub Pages で公開する（GitHub Actions 方式）"
 description: "GitHub Pages の公開ソースを GitHub Actions に切り替える、GitHub Actions のワークフローを追加する、重要: 公開したいフォルダをそのままアップロードするを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

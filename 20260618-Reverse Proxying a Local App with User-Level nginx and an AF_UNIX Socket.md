@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-06-18T16:09:29+09:00
 title: "ユーザー権限 nginx + AF_UNIX socket でローカルアプリを reverse proxy する"
 description: "方針、ディレクトリ構成、nginx の起動を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"

@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-04-22T22:45:06+09:00
 title: "textarea を文字数に応じて自動で伸縮させる方法"
 description: "フォームの入力欄で、`textarea` の内容が増えたら高さも自然に伸びてほしい、という場面は多いです。 この実装はシンプルで、JavaScript で `scrollHeight` を使うだけです。"

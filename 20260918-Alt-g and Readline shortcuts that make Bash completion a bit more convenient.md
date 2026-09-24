@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Bashの補完がちょっと便利になるAlt-gとReadlineショートカット"
 description: "Alt-g：globを使って補完する、Ctrl-x *：globをその場で展開する、Alt-.：直前のコマンドの最後の引数を再利用するを中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
 pubDatetime: 2026-09-18T11:05:17.941Z

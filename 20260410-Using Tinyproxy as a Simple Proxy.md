@@ -1,4 +1,4 @@
-﻿---
+---
 pubDatetime: 2026-04-10T16:26:01+09:00
 title: "Tinyproxyをシンプルなプロキシとして使う方法"
 description: "Tinyproxyのインストール、基本設定、Tinyproxyの起動を中心に、記事全体の背景・手順・確認方法・注意点を整理します。"
