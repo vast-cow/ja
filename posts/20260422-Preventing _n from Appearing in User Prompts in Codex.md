@@ -8,464 +8,252 @@ Codexを使っていると、プロンプト入力欄に意図しない `\n` が
 
 ## これは何をするものか
 
-このUserScriptは、ChatGPT Codex Cloudの入力欄を監視し、ユーザーが入力した内容の中に入ってしまった改行コードを取り除くためのものです。
+このUserScriptは、ChatGPT Codex Cloudの `#prompt-textarea` で貼り付けが発生したときだけ動作します。
 
-特に、`#prompt-textarea` という入力エリアの中にある段落要素を対象にして、`CR` や `LF` といった改行文字を削除します。これにより、プロンプトが意図せず複数行になってしまうのを防ぎます。
+貼り付け後、入力欄の直下にある `<p>` 要素のテキストノードを確認し、改行コードを次のように正規化します。
 
-また、改行を削除したあとにカーソル位置が大きくずれないように調整する仕組みも入っています。そのため、入力中の操作感ができるだけ損なわれにくくなっています。
+* `CRLF`（`\r\n`）→ `LF`（`\n`）
+* `CR`（`\r`）→ `LF`（`\n`）
+* `LF`（`\n`）→ そのまま
+
+つまり、文章中の改行そのものは維持し、改行コードの種類だけをLFに揃えます。
 
 ## 何のために使うのか
 
-このスクリプトの主な目的は、プロンプトを1行のまま扱いやすくすることです。
+コピー元のOSやアプリケーションによって、テキストに含まれる改行コードが異なる場合があります。
 
-たとえば、次のような場面で役立ちます。
+このスクリプトは、それらを貼り付け後にLFへ統一し、Codexへ入力するテキストの改行形式を一定にするためのものです。
 
-* 入力中に不要な改行が混ざるのを避けたい
-* プロンプトを整った形でそのまま送信したい
-* 改行によって見た目や編集操作が不安定になるのを減らしたい
+たとえば、内部的に次のような文字列があった場合、
 
-細かな内部処理はありますが、利用者としては「入力欄の改行を自動で消してくれる補助ツール」と考えれば十分です。
+```text
+AAA\r\nBBB\rCCC\nDDD
+```
+
+正規化後は次の状態になります。
+
+```text
+AAA\nBBB\nCCC\nDDD
+```
+
+表示上の複数行構造は維持されます。
+
+## 軽量化した仕組み
+
+以前の実装では、`#prompt-textarea` の出現や差し替えを検出するために `MutationObserver` でページ全体のDOM変更を監視していました。
+
+今回の実装では、この常時監視を行いません。
+
+代わりに `document` に `paste` イベントリスナーを1つだけ登録し、イベントが `#prompt-textarea` から発生した場合だけ処理します。
+
+この方式には次の特徴があります。
+
+* ページ全体を `MutationObserver` で常時監視しない
+* エディタを繰り返し `querySelector` で探索しない
+* `#prompt-textarea` が差し替えられてもリスナーを付け直す必要がない
+* 貼り付けが発生したときだけ正規化処理を行う
+* `innerHTML` 全体を書き換えず、必要なテキストノードだけ変更する
+* デバッグ用の大量のconsoleログを出力しない
 
 ## 使い方
 
 ### UserScriptとして登録する
 
-このコードはUserScriptとして使います。一般的には、ブラウザにUserScriptを実行できる拡張機能を入れたうえで、そこにスクリプトを登録します。
+ブラウザにUserScriptを実行できる拡張機能を導入し、後述のコードを新しいUserScriptとして登録します。
 
-登録すると、対象ページで自動的に動作するようになります。
+登録後、対象のCodex Cloudページを開くと自動的に有効になります。
 
 ### 対象ページ
 
-このスクリプトは、次のURLに対応しています。
+このスクリプトは次のURLを対象にしています。
 
 * `https://chatgpt.com/codex/cloud`
 * `https://chatgpt.com/codex/cloud/*`
+* `https://chatgpt.com/codex/cloud?*`
 
-そのため、Codex Cloudの該当ページを開いたときに動作します。
+## 動作の流れ
 
-### 動作の流れ
+処理の流れは次のとおりです。
 
-ページを開くと、スクリプトが入力欄の出現を待ちます。
-入力欄が見つかると、入力イベントを監視し、文字が入力されるたびに改行が含まれていないかを確認します。
+1. ページ読み込み時に `document` へ `paste` リスナーを1つ登録する
+2. 貼り付けイベントが発生する
+3. `event.composedPath()` から `#prompt-textarea` 内での貼り付けか確認する
+4. 対象外なら何もしない
+5. 対象なら、通常の貼り付け処理がDOMへ反映されるのを待つ
+6. `#prompt-textarea` 直下の `<p>` を調べる
+7. 各 `<p>` 内のテキストノードについて、`CRLF` と `CR` を `LF` に変換する
 
-改行があれば自動で削除し、その後にカーソル位置をできるだけ自然な位置へ戻します。
+`LF` はそのまま残すため、改行を削除する処理ではありません。
 
-## 使うときのポイント
-
-### 改行を残したい用途には向かない
-
-このスクリプトは改行を消すことが前提です。複数行のプロンプトをそのまま書きたい場合には不向きです。
-
-### 入力の見た目を整えたい人向け
-
-1行で簡潔にプロンプトを書きたい場合や、意図しない改行が気になる場合には便利です。入力時のストレスを減らしたい人に向いています。
-
-## まとめ
-
-このUserScriptは、Codex Cloudの入力欄で不要な改行が入るのを防ぐためのシンプルな補助ツールです。
-入力欄を監視し、改行を自動で削除しながら、カーソル位置もできるだけ保つように動きます。
-
-技術的な仕組みを深く理解しなくても、「Codexのプロンプトを1行で安定して入力しやすくするためのもの」として使えます。
+## UserScript
 
 ```javascript
 // ==UserScript==
-// @name         ChatGPT Codex Cloud - Remove Newlines in Prompt
+// @name         ChatGPT Codex Cloud - Normalize Newlines to LF
 // @namespace    https://chatgpt.com/
-// @version      1.1.2-debug
-// @description  Remove CR/LF from direct <p> children on paste event with detailed debug logs.
+// @version      1.2.0
+// @description  Normalize CRLF/CR to LF in direct <p> children after paste.
 // @match        https://chatgpt.com/codex/cloud
 // @match        https://chatgpt.com/codex/cloud/*
+// @match        https://chatgpt.com/codex/cloud?*
 // @grant        none
 // ==/UserScript==
 
 (() => {
   "use strict";
 
-  const LOG_PREFIX = "[CodexPromptNLDebug]";
-  const SCRIPT_VERSION = "1.1.2-debug";
-
-  let observerA = null; // waits for #prompt-textarea to appear
-  let observerB = null; // watches #prompt-textarea replacement/removal
-  let currentEditor = null;
-  let pasteHandler = null;
-
-  let attachCount = 0;
-  let pasteCount = 0;
-  let sanitizeCount = 0;
-  let observerACallbackCount = 0;
-  let observerBCallbackCount = 0;
-
-  function log(...args) {
-    console.log(LOG_PREFIX, ...args);
+  /**
+   * CRLF / CR を LF に統一する。
+   *
+   * \r\n -> \n
+   * \r   -> \n
+   * \n   -> \n
+   */
+  function normalizeNewlines(text) {
+    return text.replace(/\r\n?/g, "\n");
   }
 
-  function warn(...args) {
-    console.warn(LOG_PREFIX, ...args);
-  }
+  /**
+   * #prompt-textarea 直下の <p> に含まれる
+   * テキストノードだけを処理する。
+   */
+  function normalizeParagraphs(editor) {
+    if (!editor?.isConnected) return;
 
-  function error(...args) {
-    console.error(LOG_PREFIX, ...args);
-  }
+    for (const p of editor.children) {
+      if (p.tagName !== "P") continue;
 
-  function describeNode(node) {
-    if (!node) return null;
+      const walker = document.createTreeWalker(
+        p,
+        NodeFilter.SHOW_TEXT
+      );
 
-    return {
-      nodeName: node.nodeName,
-      id: node.id || null,
-      className: typeof node.className === "string" ? node.className : null,
-      isConnected: node.isConnected,
-      childElementCount: node.childElementCount,
-      textLength: node.textContent?.length ?? null,
-      htmlLength: node.innerHTML?.length ?? null,
-    };
-  }
+      let node;
 
-  function getEditor() {
-    return document.querySelector("#prompt-textarea");
-  }
-
-  function getParagraphs(editor = getEditor()) {
-    if (!editor) return [];
-    return editor.querySelectorAll(":scope > p");
-  }
-
-  function sanitizeParagraphs(reason = "unknown") {
-    sanitizeCount += 1;
-
-    log("sanitizeParagraphs:start", {
-      sanitizeCount,
-      reason,
-      href: location.href,
-      activeElement: describeNode(document.activeElement),
-      currentEditor: describeNode(currentEditor),
-      foundEditor: describeNode(getEditor()),
-    });
-
-    try {
-      const editor = getEditor();
-
-      if (!editor) {
-        warn("sanitizeParagraphs:editor-not-found", {
-          sanitizeCount,
-          reason,
-        });
-        return;
-      }
-
-      const paragraphs = getParagraphs(editor);
-
-      log("sanitizeParagraphs:editor-found", {
-        sanitizeCount,
-        reason,
-        editor: describeNode(editor),
-        paragraphCount: paragraphs.length,
-      });
-
-      let changedCount = 0;
-
-      paragraphs.forEach((p, index) => {
-        const before = p.innerHTML;
-        const after = before.replaceAll("\r", "").replaceAll("\n", "");
-
-        const hasCR = before.includes("\r");
-        const hasLF = before.includes("\n");
-
-        log("sanitizeParagraphs:paragraph-check", {
-          sanitizeCount,
-          index,
-          hasCR,
-          hasLF,
-          beforeHtmlLength: before.length,
-          afterHtmlLength: after.length,
-          textLength: p.textContent?.length ?? null,
-        });
+      while ((node = walker.nextNode())) {
+        const before = node.data;
+        const after = normalizeNewlines(before);
 
         if (before !== after) {
-          changedCount += 1;
-
-          log("sanitizeParagraphs:paragraph-changed", {
-            sanitizeCount,
-            index,
-            before,
-            after,
-          });
-
-          p.innerHTML = after;
-        } else {
-          log("sanitizeParagraphs:paragraph-unchanged", {
-            sanitizeCount,
-            index,
-          });
+          node.data = after;
         }
-      });
-
-      log("sanitizeParagraphs:done", {
-        sanitizeCount,
-        reason,
-        paragraphCount: paragraphs.length,
-        changedCount,
-      });
-    } catch (err) {
-      error("sanitizeParagraphs:error", {
-        sanitizeCount,
-        reason,
-        errorName: err?.name,
-        errorMessage: err?.message,
-        stack: err?.stack,
-      });
-    }
-  }
-
-  function detachFromCurrentEditor(reason = "unknown") {
-    log("detachFromCurrentEditor:start", {
-      reason,
-      currentEditor: describeNode(currentEditor),
-      hasPasteHandler: Boolean(pasteHandler),
-    });
-
-    try {
-      if (currentEditor && pasteHandler) {
-        currentEditor.removeEventListener("paste", pasteHandler);
-        log("detachFromCurrentEditor:paste-listener-removed", {
-          reason,
-        });
-      } else {
-        log("detachFromCurrentEditor:no-listener-to-remove", {
-          reason,
-        });
       }
-    } catch (err) {
-      error("detachFromCurrentEditor:error", {
-        reason,
-        errorName: err?.name,
-        errorMessage: err?.message,
-        stack: err?.stack,
-      });
-    } finally {
-      currentEditor = null;
-      pasteHandler = null;
     }
   }
 
-  function attachToEditor(editor, reason = "unknown") {
-    attachCount += 1;
+  /**
+   * paste の発生元が #prompt-textarea 内か確認する。
+   *
+   * イベント委譲を使うため、エディタ自体が
+   * 差し替えられてもリスナーの再登録は不要。
+   */
+  function getEditorFromPasteEvent(event) {
+    const path = event.composedPath();
 
-    log("attachToEditor:start", {
-      attachCount,
-      reason,
-      editor: describeNode(editor),
-      sameAsCurrentEditor: editor === currentEditor,
-      hasExistingPasteHandler: Boolean(pasteHandler),
-      currentEditor: describeNode(currentEditor),
-      hasObserverA: Boolean(observerA),
-      hasObserverB: Boolean(observerB),
-    });
-
-    if (!editor) {
-      warn("attachToEditor:called-with-empty-editor", {
-        attachCount,
-        reason,
-      });
-      return;
+    for (const node of path) {
+      if (
+        node instanceof Element &&
+        node.id === "prompt-textarea"
+      ) {
+        return node;
+      }
     }
 
-    if (editor === currentEditor && pasteHandler && currentEditor?.isConnected) {
-      log("attachToEditor:already-attached-same-connected-editor", {
-        attachCount,
-        reason,
-      });
-      return;
-    }
+    return null;
+  }
 
-    if (currentEditor && pasteHandler) {
-      detachFromCurrentEditor("reattach-to-editor");
-    }
+  /**
+   * document に paste listener を1つだけ登録する。
+   * MutationObserver は使用しない。
+   */
+  document.addEventListener(
+    "paste",
+    event => {
+      const editor = getEditorFromPasteEvent(event);
 
-    currentEditor = editor;
+      if (!editor) return;
 
-    pasteHandler = (e) => {
-      pasteCount += 1;
-
-      log("paste:event-fired", {
-        pasteCount,
-        eventType: e.type,
-        target: describeNode(e.target),
-        currentTarget: describeNode(e.currentTarget),
-        clipboardTypes: Array.from(e.clipboardData?.types ?? []),
-        href: location.href,
-      });
-
+      // 通常のpaste処理がDOMへ反映された後に実行する。
       setTimeout(() => {
-        log("paste:setTimeout-fired", {
-          pasteCount,
-          currentEditorConnected: currentEditor?.isConnected ?? null,
-          currentEditor: describeNode(currentEditor),
-          foundEditor: describeNode(getEditor()),
-          paragraphCount: getParagraphs().length,
-        });
-
-        sanitizeParagraphs("paste-timeout-0");
+        normalizeParagraphs(editor);
       }, 0);
-    };
-
-    editor.addEventListener("paste", pasteHandler);
-
-    log("attachToEditor:paste-listener-attached", {
-      attachCount,
-      reason,
-    });
-
-    if (observerA) {
-      observerA.disconnect();
-      observerA = null;
-
-      log("attachToEditor:observerA-disconnected", {
-        attachCount,
-        reason,
-      });
-    }
-
-    ensureObserverB();
-  }
-
-  function ensureObserverB() {
-    if (observerB) {
-      log("ensureObserverB:already-running");
-      return;
-    }
-
-    observerB = new MutationObserver((mutations) => {
-      observerBCallbackCount += 1;
-
-      const foundEditor = getEditor();
-      const currentConnected = currentEditor?.isConnected ?? false;
-      const sameEditor = foundEditor === currentEditor;
-
-      log("observerB:callback", {
-        observerBCallbackCount,
-        mutationCount: mutations.length,
-        foundEditorExists: Boolean(foundEditor),
-        currentConnected,
-        sameEditor,
-        currentEditor: describeNode(currentEditor),
-        foundEditor: describeNode(foundEditor),
-      });
-
-      // Case 1:
-      // #prompt-textarea が完全に消えた
-      if (!foundEditor) {
-        log("observerB:editor-not-found", {
-          observerBCallbackCount,
-        });
-
-        detachFromCurrentEditor("editor-not-found");
-
-        if (observerB) {
-          observerB.disconnect();
-          observerB = null;
-
-          log("observerB:disconnected", {
-            observerBCallbackCount,
-          });
-        }
-
-        waitForEditor("editor-not-found");
-        return;
-      }
-
-      // Case 2:
-      // 新しい #prompt-textarea が存在するが、currentEditor は古い detached node を指している
-      // 今回のログで発生していたのはこのケース
-      if (!currentConnected || !sameEditor) {
-        warn("observerB:editor-replaced-detected", {
-          observerBCallbackCount,
-          currentConnected,
-          sameEditor,
-          currentEditor: describeNode(currentEditor),
-          foundEditor: describeNode(foundEditor),
-        });
-
-        attachToEditor(foundEditor, "observerB-detected-replacement");
-        return;
-      }
-    });
-
-    observerB.observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-    });
-
-    log("ensureObserverB:started");
-  }
-
-  function waitForEditor(reason = "initial") {
-    log("waitForEditor:start", {
-      reason,
-      href: location.href,
-      readyState: document.readyState,
-      hasObserverA: Boolean(observerA),
-      hasObserverB: Boolean(observerB),
-      currentEditor: describeNode(currentEditor),
-    });
-
-    const editor = getEditor();
-
-    if (editor) {
-      log("waitForEditor:editor-already-present", {
-        reason,
-        editor: describeNode(editor),
-      });
-
-      attachToEditor(editor, `waitForEditor:${reason}`);
-      return;
-    }
-
-    if (observerA) {
-      log("waitForEditor:observerA-already-running", {
-        reason,
-      });
-      return;
-    }
-
-    observerA = new MutationObserver((mutations) => {
-      observerACallbackCount += 1;
-
-      const found = getEditor();
-
-      log("observerA:callback", {
-        observerACallbackCount,
-        mutationCount: mutations.length,
-        found: Boolean(found),
-        foundEditor: describeNode(found),
-      });
-
-      if (found) {
-        log("observerA:editor-appeared", {
-          observerACallbackCount,
-        });
-
-        attachToEditor(found, "observerA-editor-appeared");
-      }
-    });
-
-    observerA.observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-    });
-
-    log("waitForEditor:observerA-started", {
-      reason,
-    });
-  }
-
-  log("userscript:initialized", {
-    version: SCRIPT_VERSION,
-    href: location.href,
-    readyState: document.readyState,
-    userAgent: navigator.userAgent,
-  });
-
-  waitForEditor("initial");
+    },
+    true
+  );
 })();
 ```
+
+## 改行正規化のポイント
+
+正規化には次の処理を使っています。
+
+```javascript
+text.replace(/\r\n?/g, "\n");
+```
+
+ここでは `\r\n?` によって、まず `CRLF`（`\r\n`）を1つの改行として扱い、単独の `CR`（`\r`）にも対応します。
+
+置換先はいずれも `\n` です。
+
+そのため、`CRLF` を誤って2つのLFへ変換することなく、すべてLFへ統一できます。
+
+## DOM全体を書き換えない理由
+
+このスクリプトでは、段落の `innerHTML` を取得して再代入する方法は使いません。
+
+代わりに `TreeWalker` でテキストノードだけを取得し、実際に改行コードの変換が必要なノードだけ `node.data` を変更します。
+
+これにより、段落内部のDOM構造を必要以上に再構築せずに済みます。
+
+## MutationObserverを使わない理由
+
+この処理が必要になるのは貼り付け時だけです。
+
+そのため、入力欄の出現・削除・差し替えを検出する目的でページ全体を常時監視する必要はありません。
+
+`paste` イベントを `document` で受けるイベント委譲方式にすると、`#prompt-textarea` が後から作成された場合や別のDOMノードへ差し替えられた場合でも、そのまま貼り付けイベントを処理できます。
+
+## 動作確認
+
+確認する場合は、改行コードの異なるテキストをCodex Cloudの入力欄へ貼り付けます。
+
+想定する変換は次のとおりです。
+
+| 貼り付け前 | 貼り付け後 |
+| --- | --- |
+| `A\r\nB` | `A\nB` |
+| `A\rB` | `A\nB` |
+| `A\nB` | `A\nB` |
+| `A\r\nB\rC\nD` | `A\nB\nC\nD` |
+
+重要なのは、**改行の数や文章の複数行構造を消すのではなく、改行コードだけをLFへ統一する**ことです。
+
+## 注意点
+
+### 貼り付け時だけ動作する
+
+このUserScriptは `paste` イベントを契機にしています。
+
+キーボード入力など、貼り付け以外の方法で入力された内容を常時監視して正規化するものではありません。
+
+### 対象は直下の `<p>` 要素
+
+処理対象は `#prompt-textarea` の直下にある `<p>` 要素です。
+
+Codex Cloud側のDOM構造が将来変更された場合は、対象要素の条件を調整する必要が出る可能性があります。
+
+### LFは削除しない
+
+このスクリプトの目的は1行化ではありません。
+
+複数行のプロンプトは複数行のまま維持され、`LF` も残ります。
+
+## まとめ
+
+このUserScriptは、ChatGPT Codex Cloudへテキストを貼り付けたときに、`CRLF` と `CR` を `LF` へ統一します。
+
+改行そのものは維持するため、複数行のプロンプトをそのまま利用できます。
+
+また、ページ全体を `MutationObserver` で監視せず、`document` の `paste` イベントを利用する構成にすることで、常時監視を避けています。
+
+処理対象についても `innerHTML` 全体ではなくテキストノードだけを変更するため、必要なタイミングに必要な範囲だけ処理する構成になっています。
