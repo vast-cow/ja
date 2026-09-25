@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      BLOG_LANG: ${{ vars.BLOG_LANG }}
     steps:
       - name: Checkout site
         uses: actions/checkout@v4
@@ -40,12 +42,14 @@ jobs:
           rm -rf content-source
 
       - name: Cache OG image fonts
+        if: env.BLOG_LANG == 'ja'
         uses: actions/cache@v4
         with:
           path: .cache/og-fonts
           key: ${{ runner.os }}-og-fonts-${{ hashFiles('scripts/download-og-fonts.sh') }}
 
       - name: Download OG image fonts
+        if: env.BLOG_LANG == 'ja'
         run: bash scripts/download-og-fonts.sh
 
       - name: Install pnpm

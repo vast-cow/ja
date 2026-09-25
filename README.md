@@ -3,6 +3,14 @@
 This branch contains the posts and GitHub Pages deployment workflow for the
 AstroPaper site.
 
+## Blog language
+
+Set the `BLOG_LANG` GitHub Repository variable to the language configured for
+the AstroPaper site (for example, `en` or `ja`). The deployment workflow passes
+this value to the site build. Japanese builds also download and cache the Noto
+Sans JP fonts used to render dynamic Open Graph images; other languages keep
+using the font handling provided by the AstroPaper site.
+
 ## Optional giscus comments
 
 Comments are disabled unless all of the following GitHub Repository variables
