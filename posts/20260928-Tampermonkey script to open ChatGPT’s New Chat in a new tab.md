@@ -129,23 +129,22 @@ ChatGPTの画面にある
                 const buttonCloned = button.cloneNode(true);
 
                 // 複製した button 内の
-                // 「新しいチャット」を「新規タブ」に変更
+                // 「新しいチャット」を「新規Window」に変更
                 const clonedSpan = findTargetSpan(buttonCloned);
 
                 if (clonedSpan) {
                     clonedSpan.innerText = CLONED_TEXT;
                 }
 
-                buttonCloned.firstChild.classList.replace(
-                    "text-emphasis",
-                    "text-default"
-                );
+                buttonCloned.classList.replace("bg-primary-ghost-hover", "hover:bg-primary-ghost-hover")
+                buttonCloned.classList.add("data-[state=open]:bg-primary-ghost-hover")
+                buttonCloned.firstChild.classList.replace("text-emphasis", "text-default")
 
                 // <a href="/"> を作成
                 const anchor = document.createElement('a');
 
                 anchor.href = '/';
-                anchor.target = '_blank';
+                anchor.target = "_blank";
                 anchor.dataset.tmNewChatLink = 'true';
 
                 anchor.appendChild(buttonCloned);
