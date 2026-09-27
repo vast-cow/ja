@@ -43,7 +43,7 @@ ChatGPTの画面にある
 // @name         Add New Chat Link
 // @namespace    tampermonkey
 // @version      1.0
-// @description  「新しいチャット」ボタンを複製してリンクを追加
+// @description  Duplicates the "New Chat" button and adds a link.
 // @match        https://chatgpt.com/*
 // @grant        none
 // ==/UserScript==
@@ -51,16 +51,15 @@ ChatGPTの画面にある
 (function () {
     'use strict';
 
-    const TARGET_TEXT = '新しいチャット';
-    const CLONED_TEXT = '新規タブ';
+    const TARGET_TEXT = 'New Chat';
+    const CLONED_TEXT = 'New Tab';
     const ADDED_LINK_SELECTOR = 'a[data-tm-new-chat-link]';
 
     /**
-     * root 自身または子孫から
-     * 「新しいチャット」の span を探す
+     * Searches for the "New Chat" span within the target root or its descendants.
      */
     function findTargetSpan(targetRoot) {
-        // root 自身を確認
+        // Check the root element itself
         if (
             targetRoot instanceof HTMLSpanElement &&
             targetRoot.innerText.trim() === TARGET_TEXT
@@ -68,7 +67,7 @@ ChatGPTの画面にある
             return targetRoot;
         }
 
-        // 子孫を確認
+        // Check the descendants
         if (targetRoot.querySelectorAll) {
             for (const span of targetRoot.querySelectorAll('span')) {
                 if (span.innerText.trim() === TARGET_TEXT) {
@@ -96,7 +95,7 @@ ChatGPTの画面にある
         let observer;
 
         function process(targetRoot) {
-            // process 中は observer を停止
+            // Stop the observer while processing
             observer?.disconnect();
 
             try {
@@ -106,41 +105,40 @@ ChatGPTの画面にある
                     return;
                 }
 
-                // 祖先の button を取得
+                // Get the ancestor button
                 const button = span.closest('button');
 
                 if (!button) {
                     return;
                 }
 
-                // button の parent を取得
+                // Get the button's parent
                 const parent = button.parentElement;
 
                 if (!parent) {
                     return;
                 }
 
-                // すでに追加済みなら何もしない
+                // Do nothing if already added
                 if (parent.querySelector(ADDED_LINK_SELECTOR)) {
                     return;
                 }
 
-                // button を複製
+                // Clone the button
                 const buttonCloned = button.cloneNode(true);
 
-                // 複製した button 内の
-                // 「新しいチャット」を「新規Window」に変更
+                // Change "New Chat" to "New Window" in the cloned button
                 const clonedSpan = findTargetSpan(buttonCloned);
 
                 if (clonedSpan) {
                     clonedSpan.innerText = CLONED_TEXT;
                 }
 
-                buttonCloned.classList.replace("bg-primary-ghost-hover", "hover:bg-primary-ghost-hover")
-                buttonCloned.classList.add("data-[state=open]:bg-primary-ghost-hover")
-                buttonCloned.firstChild.classList.replace("text-emphasis", "text-default")
+                buttonCloned.classList.replace("bg-primary-ghost-hover", "hover:bg-primary-ghost-hover");
+                buttonCloned.classList.add("data-[state=open]:bg-primary-ghost-hover");
+                buttonCloned.firstChild.classList.replace("text-emphasis", "text-default");
 
-                // <a href="/"> を作成
+                // Create the <a> tag
                 const anchor = document.createElement('a');
 
                 anchor.href = '/';
@@ -149,18 +147,18 @@ ChatGPTの画面にある
 
                 anchor.appendChild(buttonCloned);
 
-                // 元 button の parent に追加
+                // Add to the parent of the original button
                 parent.prepend(anchor);
 
                 console.log('[Tampermonkey] link added:', anchor);
             } finally {
-                // process 完了後に監視を再開
+                // Resume observation after processing
                 observer?.observe(root, observerOptions);
             }
         }
 
         observer = new MutationObserver((mutations) => {
-            // callback 開始時点で止める
+            // Stop at the beginning of the callback
             observer.disconnect();
 
             try {
@@ -178,10 +176,10 @@ ChatGPTの画面にある
             }
         });
 
-        // 初回実行
+        // Initial execution
         process(root);
 
-        // #root 以下への子孫要素追加を監視
+        // Observe child element additions under #root
         observer.observe(root, observerOptions);
     }
 
