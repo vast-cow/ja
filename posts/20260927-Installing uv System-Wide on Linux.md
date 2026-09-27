@@ -7,8 +7,7 @@ description: "公式インストーラーの配置先を `/usr/local/bin` に指
 Linux で `uv` 自体を **system-wide** に入れて、全ユーザーから `uv` / `uvx` を使えるようにしたいなら、`/usr/local/bin` に入れる方法が素直です。
 
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh \
-  | sudo env UV_INSTALL_DIR=/usr/local/bin UV_NO_MODIFY_PATH=1 sh
+curl -LsSf https://astral.sh/uv/install.sh | UV_INSTALL_DIR=/usr/local/bin UV_NO_MODIFY_PATH=1 sudo -E sh
 ```
 
 確認:
