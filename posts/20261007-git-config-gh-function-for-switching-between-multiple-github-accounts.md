@@ -33,7 +33,7 @@ git-config-gh() (
   original="$(gh api user --jq '.login')" || return 1
 
   # 成功・失敗にかかわらず元のアカウントへ戻す
-  trap 'gh auth switch --hostname github.com --user "$original" >/dev/null 2>&1 || true' EXIT
+  trap 'gh auth switch --hostname github.com --user "$original" || true' EXIT
 
   gh auth switch --hostname github.com --user "$username" || return 1
 
