@@ -41,10 +41,6 @@ from pathlib import Path
 from datetime import datetime
 
 
-def is_under_home(path: str, home: str) -> bool:
-    return path == home or path.startswith(home + "/")
-
-
 def format_args(args: list[str]) -> str:
     return " ".join(shlex.quote(arg) for arg in args)
 
@@ -103,10 +99,6 @@ def main() -> None:
                         "--ro-bind",
                         f"{home}/.codex/packages",
                         f"{home}/.codex/packages",
-                        "--dir", f"{home}/.local/bin",
-                        "--symlink",
-                        f"{home}/.codex/packages/standalone/current/bin/codex",
-                        f"{home}/.local/bin/codex",
                     ])
                     tmpfs_inserted = True
 
