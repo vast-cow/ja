@@ -36,7 +36,6 @@ import os
 import sys
 import shlex
 import pwd
-import subprocess
 from pathlib import Path
 from datetime import datetime
 
@@ -49,7 +48,6 @@ def main() -> None:
     os.umask(0o077)
 
     home = os.environ["HOME"]
-    pwd_path = os.environ["PWD"]
 
     real_bwrap = os.environ.get("BWRAP_REAL", "/usr/bin/bwrap")
     log_file = os.environ.get(
@@ -64,16 +62,62 @@ def main() -> None:
     pid = os.getpid()
 
     original_args = sys.argv[1:]
-    args = []
+    # Require both --argv0 codex-linux-sandbox and */codex immediately after --.
+    separator_index = original_args.index("--") if "--" in original_args else -1
+    wrapper_args = original_args[:separator_index] if separator_index >= 0 else original_args
+    is_codex_linux_sandbox = any(
+        wrapper_args[i] == "--argv0"
+        and wrapper_args[i + 1] == "codex-linux-sandbox"
+        for i in range(len(wrapper_args) - 1)
+    )
+    has_codex_command = (
+        separator_index >= 0
+        and separator_index + 1 < len(original_args)
+        and os.path.basename(original_args[separator_index + 1]) == "codex"
+        and "/" in original_args[separator_index + 1]
+    )
+    is_codex = is_codex_linux_sandbox and has_codex_command
+    args = original_args.copy() if not is_codex else []
+    sandbox_cwd = None
+
+    if is_codex:
+        i = 0
+        while i < len(original_args):
+            arg = original_args[i]
+
+            if arg == "--sandbox-policy-cwd":
+                if i + 1 < len(original_args):
+                    sandbox_cwd = original_args[i + 1]
+                break
+
+            if arg.startswith("--sandbox-policy-cwd="):
+                sandbox_cwd = arg.split("=", 1)[1]
+                break
+
+            i += 1
+
+    if is_codex and sandbox_cwd:
+        sandbox_cwd = os.path.normpath(sandbox_cwd)
+        if not os.path.isabs(sandbox_cwd):
+            sys.exit("Error: --sandbox-policy-cwd must be absolute")
+    else:
+        sandbox_cwd = None
 
     tmpfs_inserted = False
 
     i = 0
 
-    while i < len(original_args):
+    while is_codex and i < len(original_args):
         arg = original_args[i]
 
-        # --dev /dev を変換
+        # Remove the read-only bind mount for sandbox_cwd/.git.
+        if arg == "--ro-bind" and i + 2 < len(original_args) and sandbox_cwd is not None:
+            git_path = os.path.join(sandbox_cwd, ".git")
+            if original_args[i + 1] == git_path and original_args[i + 2] == git_path:
+                i += 3
+                continue
+
+        # Convert --dev /dev.
         if (
             arg == "--dev"
             and i + 1 < len(original_args)
@@ -83,22 +127,30 @@ def main() -> None:
             i += 2
             continue
 
-        # --bind の変換
+        # Handle --bind arguments.
         if arg == "--bind" and i + 2 < len(original_args):
             src = original_args[i + 1]
             dst = original_args[i + 2]
 
-            # SRCとDSTが両方PWDと完全一致する場合
-            if src == pwd_path and dst == pwd_path:
+            # If sandbox_cwd is set and
+            # both SRC and DST equal sandbox_cwd:
+            if (
+                sandbox_cwd is not None
+                and src == sandbox_cwd
+                and dst == sandbox_cwd
+            ):
 
-                # 最初の該当箇所にだけtmpfsを挿入
+                # Insert tmpfs only at the first matching bind mount.
                 if not tmpfs_inserted:
                     args.extend([
                         "--tmpfs", home,
-                        "--dir", f"{home}/.codex",
+                        "--dir", os.path.join(home, ".codex"),
                         "--ro-bind",
-                        f"{home}/.codex/packages",
-                        f"{home}/.codex/packages",
+                        os.path.join(home, ".codex/packages"),
+                        os.path.join(home, ".codex/packages"),
+                        "--bind",
+                        os.path.join(home, ".codex/memories"),
+                        os.path.join(home, ".codex/memories"),
                     ])
                     tmpfs_inserted = True
 
@@ -109,13 +161,16 @@ def main() -> None:
         args.append(arg)
         i += 1
 
-    # ログ記録
+    # Write the log.
     with open(log_file, "a", encoding="utf-8") as log:
         log.write("\n========== BWRAP START ==========\n")
         log.write(f"Timestamp: {timestamp}\n")
         log.write(f"User: {user_name}\n")
         log.write(f"PID: {pid}\n")
+        log.write(f"Codex invocation: {is_codex}\n")
         log.write(f"Bwrap: {real_bwrap}\n")
+        log.write(f"Sandbox CWD: {sandbox_cwd or '(not specified)'}\n")
+        log.write(f"Tmpfs inserted: {tmpfs_inserted}\n")
 
         log.write(f"Original args: {format_args(original_args)}\n")
         log.write(f"Modified args: {format_args(args)}\n")
@@ -126,7 +181,7 @@ def main() -> None:
 
         log.write("=========== BWRAP END ===========\n")
 
-    # Bashのexecと同等（プロセスを置換）
+    # Replace the current process, equivalent to Bash's exec.
     os.execv(real_bwrap, [real_bwrap, *args])
 
 
