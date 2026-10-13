@@ -151,7 +151,7 @@ IPMI
 
 ```bash
 socat \
-  TCP4-LISTEN:8082,bind=127.0.0.1,reuseaddr,fork \
+  UNIX-LISTEN:./app.sock,fork,unlink-early,mode=0600 \
   OPENSSL:x.x.x.x:443,verify=0
 ```
 
@@ -161,7 +161,7 @@ socat \
 tailscale serve \
   --service=svc:x11dpi-ipmi \
   --tls-terminated-tcp=443 \
-  tcp://127.0.0.1:8082
+  "unix:${PWD}/app.sock"
 ```
 
 とします。
@@ -182,9 +182,11 @@ HTTPヘッダーを解析しないため、ATEN独自の実装にも影響され
 NginxでもHTTPではなくstreamモジュールを使えば同様です。
 
 ```nginx
+load_module /usr/lib/nginx/modules/ngx_stream_module.so;
+
 stream {
     server {
-        listen 127.0.0.1:8082;
+        listen unix:./app.sock;
 
         proxy_ssl on;
         proxy_ssl_verify off;
