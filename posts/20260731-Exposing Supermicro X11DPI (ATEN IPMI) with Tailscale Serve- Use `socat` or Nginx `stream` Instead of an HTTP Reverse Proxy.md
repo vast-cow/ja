@@ -190,6 +190,7 @@ stream {
 
         proxy_ssl on;
         proxy_ssl_verify off;
+        proxy_ssl_server_name off;
 
         proxy_pass x.x.x.x:443;
     }
