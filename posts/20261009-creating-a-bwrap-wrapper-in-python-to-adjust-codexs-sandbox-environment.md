@@ -62,7 +62,7 @@ def main() -> None:
     pid = os.getpid()
 
     original_args = sys.argv[1:]
-    # Require both --argv0 codex-linux-sandbox and */codex immediately after --.
+    # Require --argv0 codex-linux-sandbox before -- and */codex immediately after --.
     separator_index = original_args.index("--") if "--" in original_args else -1
     wrapper_args = original_args[:separator_index] if separator_index >= 0 else original_args
     is_codex_linux_sandbox = any(
