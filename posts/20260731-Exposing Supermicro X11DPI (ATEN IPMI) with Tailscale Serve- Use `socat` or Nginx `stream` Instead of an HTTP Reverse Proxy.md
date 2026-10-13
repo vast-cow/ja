@@ -161,6 +161,7 @@ socat \
 tailscale serve \
   --service=svc:x11dpi-ipmi \
   --tls-terminated-tcp=443 \
+  --proxy-protocol=2 \
   tcp://127.0.0.1:8082
 ```
 
