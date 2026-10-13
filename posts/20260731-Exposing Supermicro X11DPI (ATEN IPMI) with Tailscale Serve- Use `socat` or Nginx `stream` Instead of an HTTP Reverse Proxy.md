@@ -151,7 +151,7 @@ IPMI
 
 ```bash
 socat \
-  UNIX-LISTEN:./app.sock,fork,unlink-early,mode=0600 \
+  TCP4-LISTEN:8082,bind=127.0.0.1,reuseaddr,fork \
   OPENSSL:x.x.x.x:443,verify=0
 ```
 
@@ -161,7 +161,7 @@ socat \
 tailscale serve \
   --service=svc:x11dpi-ipmi \
   --tls-terminated-tcp=443 \
-  "unix:${PWD}/app.sock"
+  tcp://127.0.0.1:8082
 ```
 
 とします。
@@ -191,16 +191,22 @@ pid ./nginx.pid;
 events {}
 
 stream {
-    log_format main '$remote_addr [$time_local] '
-                    '$protocol $status '
-                    '$bytes_sent $bytes_received '
-                    '$session_time';
 
-    access_log ./logs/access.log;
-    access_log /dev/stderr main;
+
+    log_format proxy_protocol
+        '$time_iso8601 src=$proxy_protocol_addr '
+        'port=$proxy_protocol_port '
+        'protocol=$protocol '
+        'status=$status '
+        'bytes_sent=$bytes_sent '
+        'bytes_received=$bytes_received '
+        'session_time=$session_time';
+
+    access_log ./logs/access.log proxy_protocol;
+    access_log /dev/stderr proxy_protocol;
 
     server {
-        listen unix:./app.sock;
+        listen 127.0.0.1:8082 proxy_protocol;
 
         proxy_connect_timeout 10s;
         proxy_timeout 24h;
