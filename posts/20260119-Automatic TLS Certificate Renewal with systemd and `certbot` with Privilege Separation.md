@@ -100,6 +100,14 @@ fi
 set -xe
 set -o pipefail
 
+# Ensure runtime directories exist
+install -d \
+  -o "$EXECUTE_USER" \
+  -g "$(id -gn "$EXECUTE_USER")" \
+  -m 0700 \
+  /run/acmebot-certbot \
+  /run/acmebot-certbot/work
+
 FLAGFILE="/run/acmebot-certbot/deploy-flag.$(date "+%Y%m%d%H%M%S%N")"
 CERTPATH="$CONFIG_PATH/live/$CERT_NAME"
 
