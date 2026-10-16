@@ -310,7 +310,12 @@ if (( EUID == 0 )); then
     exit 1
 fi
 
-FLAGFILE="/run/certbot-renewal/renewed"
+# Paths default to directories managed by systemd.
+CONFIG_PATH="${CONFIG_PATH:-${STATE_DIRECTORY:?STATE_DIRECTORY is required}/config}"
+WORK_DIR="${WORK_DIR:-${RUNTIME_DIRECTORY:?RUNTIME_DIRECTORY is required}/work}"
+LOGS_DIR="${LOGS_DIR:-${LOGS_DIRECTORY:?LOGS_DIRECTORY is required}}"
+WEB_ROOT="${WEB_ROOT:-${RUNTIME_DIRECTORY:?RUNTIME_DIRECTORY is required}/webroot}"
+FLAGFILE="${RUNTIME_DIRECTORY:?RUNTIME_DIRECTORY is required}/renewed"
 
 # Prepare writable runtime directories.
 install -d -m 0700 "$WORK_DIR"
@@ -394,7 +399,7 @@ Certbot の `--deploy-hook` は証明書の発行または更新が成功した�
 /run/certbot-renewal/renewed
 ```
 
-このファイルは `RuntimeDirectory` 内にあるため、サービス起動ごとに初期化されます。
+フラグファイルのパスは `FLAGFILE="$RUNTIME_DIRECTORY/renewed"` として組み立てます。このファイルは `RuntimeDirectory` 内にあるため、サービス起動ごとに初期化されます。
 
 後続のデプロイスクリプトは、このフラグの有無によって証明書を配置するかを判断します。
 
@@ -413,7 +418,8 @@ if (( EUID != 0 )); then
     exit 1
 fi
 
-FLAGFILE="/run/certbot-renewal/renewed"
+CONFIG_PATH="${CONFIG_PATH:-${STATE_DIRECTORY:?STATE_DIRECTORY is required}/config}"
+FLAGFILE="${RUNTIME_DIRECTORY:?RUNTIME_DIRECTORY is required}/renewed"
 
 if [[ ! -f "$FLAGFILE" ]]; then
     echo "[info] no certificate renewal; skip deploy" >&2
@@ -510,16 +516,33 @@ EMAIL=hoge@mail.com
 
 CERTBOT_VENV=/usr/libexec/certbot-renewal/venv
 
-CONFIG_PATH=/var/lib/certbot-renewal/config
-WORK_DIR=/run/certbot-renewal/work
-LOGS_DIR=/var/log/certbot-renewal
-WEB_ROOT=/run/certbot-renewal/webroot
+# Optional overrides (uncomment only when the defaults are unsuitable):
+# CONFIG_PATH=/custom/certbot/config
+# WORK_DIR=/custom/certbot/work
+# LOGS_DIR=/custom/certbot/logs
+# WEB_ROOT=/custom/certbot/webroot
 
 NGINX_CERTS=/etc/nginx/pki/certs
 IPSEC_ETC=/etc/ipsec.d
 ```
 
 systemd が管理するディレクトリについては、インストール時に手動で所有者を設定する必要はありません。
+
+`certbot.env` では、systemd が提供するディレクトリ環境変数から導出できるパスを通常は指定しません。各スクリプトで `${変数:-デフォルト値}` を使用し、**明示的な指定があればそれを優先**します。
+
+| 設定項目 | 未指定時の値 | 参照元 |
+| --- | --- | --- |
+| `CONFIG_PATH` | `$STATE_DIRECTORY/config` | `StateDirectory=` |
+| `WORK_DIR` | `$RUNTIME_DIRECTORY/work` | `RuntimeDirectory=` |
+| `LOGS_DIR` | `$LOGS_DIRECTORY` | `LogsDirectory=` |
+| `WEB_ROOT` | `$RUNTIME_DIRECTORY/webroot` | `RuntimeDirectory=` |
+| `FLAGFILE`（内部変数） | `$RUNTIME_DIRECTORY/renewed` | `RuntimeDirectory=` |
+
+`FLAGFILE` は設定ファイルで指定せず、常に `RUNTIME_DIRECTORY` から組み立てます。`CERTBOT_VENV`、`NGINX_CERTS`、`IPSEC_ETC` はこれらの systemd 管理ディレクトリから導出できないため、明示設定を維持します。
+
+systemd が用意する環境変数には `RUNTIME_DIRECTORY`、`STATE_DIRECTORY`、`CACHE_DIRECTORY`、`LOGS_DIRECTORY`、`CONFIGURATION_DIRECTORY` があります。この構成では `CacheDirectory=` と `ConfigurationDirectory=` を使用していないため、対応する環境変数も参照しません。将来これらの管理対象に置くパスが増えた場合は、それぞれ `CACHE_DIRECTORY`、`CONFIGURATION_DIRECTORY` から同じ方法で導出します。複数のディレクトリを一つのディレクティブに指定した場合、環境変数はコロン区切りとなるため、本例では各管理ディレクトリを一つずつ指定する前提です。
+
+手動でスクリプトを直接実行する場合、systemd が設定する環境変数は自動では与えられません。通常は unit 経由で実行してください。
 
 `DOMAINLIST` はここでは単一ドメインを想定しています。
 
