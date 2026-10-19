@@ -81,15 +81,20 @@ if ! response="$(curl --fail --silent --show-error --location \
   exit 1
 fi
 
-if ! user_info="$(jq -er 'select(.id | type == "number") | select(.login | type == "string" and length > 0) | [.id, .login] | @tsv' <<< "$response")"; then
+if ! user_info="$(jq -er '
+  select(.id | type == "number")
+  | select(.login | type == "string" and length > 0)
+  | [.id, .login, (.name // .login)]
+  | @tsv
+' <<< "$response")"; then
   printf 'Unexpected GitHub API response for: %s\n' "$username" >&2
   exit 1
 fi
 
-IFS=$'\t' read -r id login <<< "$user_info"
+IFS=$'\t' read -r id login name <<< "$user_info"
 email="${id}+${login}@users.noreply.github.com"
 
-git config --local user.name "$login"
+git config --local user.name "$name"
 git config --local user.email "$email"
 
 printf 'user.name  = %s\n' "$(git config --local user.name)"
