@@ -9,7 +9,7 @@ GitHubで複数アカウントを使っていると、HTTPSでの`git push`や`g
 特に、
 
 ```text
-https://github.com/aont/foo.git
+https://github.com/vast-cow/foo.git
 https://github.com/another-user/bar.git
 ```
 
@@ -52,13 +52,13 @@ gh auth status
 この方法では、基本的にはrepository URLが、
 
 ```text
-https://github.com/aont/foo.git
+https://github.com/vast-cow/foo.git
 ```
 
 なら、
 
 ```bash
-gh auth token --user aont
+gh auth token --user vast-cow
 ```
 
 を実行します。
@@ -137,7 +137,7 @@ host=github.com
 しかし今回必要なのは、
 
 ```text
-aont/foo.git
+vast-cow/foo.git
 ```
 
 というpathです。
@@ -156,7 +156,7 @@ aont/foo.git
 ```text
 protocol=https
 host=github.com
-path=aont/foo.git
+path=vast-cow/foo.git
 ```
 
 のようにpathも渡されます。
@@ -192,13 +192,13 @@ repo=${repo%.git}
 たとえば、
 
 ```text
-path=aont/foo.git
+path=vast-cow/foo.git
 ```
 
 なら、
 
 ```text
-owner=aont
+owner=vast-cow
 repo=foo
 ```
 
@@ -223,13 +223,13 @@ token=$(gh auth token --user "$account")
 つまり、
 
 ```text
-https://github.com/aont/foo.git
+https://github.com/vast-cow/foo.git
 ```
 
 へのアクセス時は自動的に、
 
 ```bash
-gh auth token --user aont
+gh auth token --user vast-cow
 ```
 
 相当になります。
@@ -386,9 +386,9 @@ github.com/my-org/other-repo
         ↓
 my-work-account
 
-github.com/aont/foo
+github.com/vast-cow/foo
         ↓
-aont
+vast-cow
 ```
 
 という形です。
@@ -453,19 +453,19 @@ https://gist.github.com/USER/GIST_ID.git
 たとえば、
 
 ```text
-https://gist.github.com/aont/0123456789abcdef.git
+https://gist.github.com/vast-cow/0123456789abcdef.git
 ```
 
 なら、credential helperから見ると、
 
 ```text
-path=aont/0123456789abcdef.git
+path=vast-cow/0123456789abcdef.git
 ```
 
 となるので、
 
 ```bash
-gh auth token --user aont
+gh auth token --user vast-cow
 ```
 
 を自動的に使えます。
@@ -493,7 +493,7 @@ Gitが実際にどのcredentialを取得するかは、`git credential fill`で�
 printf '%s\n' \
   'protocol=https' \
   'host=github.com' \
-  'path=aont/foo.git' \
+  'path=vast-cow/foo.git' \
   '' |
 git credential fill
 ```
@@ -505,7 +505,7 @@ git credential fill
 ```text
 protocol=https
 host=github.com
-username=aont
+username=vast-cow
 password=...
 ```
 
@@ -622,9 +622,9 @@ remote URLそのものがcredential routingの入力になります。
 個人repositoryなら、
 
 ```text
-github.com/aont/foo
+github.com/vast-cow/foo
         ↓
-account = aont
+account = vast-cow
 ```
 
 Organization配下なら、
