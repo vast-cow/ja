@@ -31,10 +31,15 @@ git tag-bump
 
 ## Git alias の登録
 
-以下を一度だけ実行します。
+`.gitconfig` に以下を追記します。
 
-```bash
-git config --global alias.tag-bump '!f() { git tag "$(git tag -l "v*.*.*" --sort=-version:refname | awk -F. '"'"'/^v[0-9]+\.[0-9]+\.[0-9]+$/ {print $1 "." $2 "." ($3+1); exit}'"'"')"; }; f'
+```toml
+[alias]
+    tag-bump = "!f() { \
+        tag=$(git tag -l \"v*.*.*\" --sort=-version:refname | \
+            awk -F. '/^v[0-9]+\\.[0-9]+\\.[0-9]+$/ {print $1 \".\" $2 \".\" ($3+1); exit}'); \
+        git tag \"${tag:-v0.0.1}\"; \
+    }; f"
 ```
 
 これで設定は完了です。
